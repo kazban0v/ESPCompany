@@ -149,7 +149,29 @@ class Product(TimestampedModel):
     @property
     def image_url(self):
         if self.image:
-            # Используем url напрямую - Django уже добавляет MEDIA_URL
+            # Проверяем, есть ли файл в static (для Railway)
+            import os
+            from pathlib import Path
+            from django.conf import settings
+            
+            # Пробуем найти в static/img/products
+            image_name = os.path.basename(self.image.name)
+            static_products_dir = Path(settings.BASE_DIR) / 'static' / 'img' / 'products'
+            
+            # Пробуем точное совпадение
+            static_image_path = static_products_dir / image_name
+            if static_image_path.exists():
+                return f'/static/img/products/{image_name}'
+            
+            # Пробуем варианты без суффикса (например, CA1500_TSni0GL.jpg -> CA1500.jpg)
+            if '_' in image_name:
+                base_name = image_name.split('_')[0]
+                for ext in ['.jpg', '.jpeg', '.png']:
+                    variant_path = static_products_dir / f'{base_name}{ext}'
+                    if variant_path.exists():
+                        return f'/static/img/products/{base_name}{ext}'
+            
+            # Если нет в static, используем media (для локальной разработки)
             return self.image.url
         if self.image_code:
             # Игнорируем product-placeholder.png
@@ -165,8 +187,27 @@ class Product(TimestampedModel):
                 # Проверяем, что это не product-placeholder.png
                 if 'product-placeholder.png' not in self.image_code:
                     return self.image_code
-            # Если это просто код
+            # Если это просто код - пробуем найти в static
             else:
+                # Сначала пробуем найти в static/img/products
+                import os
+                from pathlib import Path
+                from django.conf import settings
+                
+                static_products_dir = Path(settings.BASE_DIR) / 'static' / 'img' / 'products'
+                # Пробуем разные варианты имени файла
+                code_variants = [
+                    f'{self.image_code}.jpg',
+                    f'{self.image_code}.png',
+                    f'{self.image_code}.jpeg',
+                ]
+                
+                for variant in code_variants:
+                    variant_path = static_products_dir / variant
+                    if variant_path.exists():
+                        return f'/static/img/products/{variant}'
+                
+                # Если не найдено в static, возвращаем старый путь (для обратной совместимости)
                 return f'/upload/resize_cache/iblock/{self.image_code}/310_310_2/{self.image_code}.png'
         
         # Пробуем найти изображение в папке elektrotehnicheskij-zavod-kvt по названию товара (title)

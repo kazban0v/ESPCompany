@@ -81,13 +81,22 @@ def migrate_data():
     print("=" * 60)
     
     # Добавляем SQLite как дополнительную базу данных
+    # Используем полную конфигурацию из settings для совместимости
+    from django.conf import settings as django_settings
     sqlite_config = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': str(sqlite_db),
+        'TIME_ZONE': django_settings.TIME_ZONE,
+        'OPTIONS': {},
+        'ATOMIC_REQUESTS': False,
+        'AUTOCOMMIT': True,
+        'CONN_MAX_AGE': 0,
+        'CONN_HEALTH_CHECKS': False,
     }
     
     # Добавляем SQLite базу данных в настройки
     settings.DATABASES['sqlite'] = sqlite_config
+    connections.databases['sqlite'] = sqlite_config
     
     try:
         # Читаем данные из SQLite
