@@ -149,7 +149,9 @@ STATICFILES_DIRS = [
 ]
 
 # WhiteNoise для статических файлов на Railway
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Используем CompressedStaticFilesStorage вместо CompressedManifestStaticFilesStorage
+# чтобы избежать проблем с отсутствующим manifest.json
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
