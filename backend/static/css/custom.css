@@ -763,3 +763,23 @@ body.section-products-open .catalog-box .subcategory-sections {
         padding: 12px 5px;
     }
 }
+
+/* Исправление белого фона после header */
+.header-box {
+    min-height: auto !important;
+    padding-bottom: 0 !important;
+}
+
+.header-box__content {
+    display: none !important;
+}
+
+.content-box {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+#catalog {
+    margin-top: 0 !important;
+    padding-top: 20px !important;
+}
