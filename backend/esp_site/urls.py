@@ -24,6 +24,8 @@ urlpatterns = [
     path('', include('catalog.urls', namespace='catalog')),
 ]
 
+# В DEBUG режиме добавляем статические файлы через Django
+# В production WhiteNoise обслуживает их автоматически
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
