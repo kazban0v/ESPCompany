@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    {# Используем существующий логотип как фавикон, чтобы он отображался и локально #}
+    <link rel="icon" href="{% static 'img/bitrix/logo_1.png' %}" type="image/png">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i&display=swap&subset=cyrillic" rel="stylesheet">
     <meta name="mailru-domain" content="0mj52qF6WiPH8q26" />
 
@@ -158,856 +159,856 @@
         </div>
     </div>
     </div> -->
-    </header>
-    <div class="content-box">
-        <div id="catalog">
-            <div class="row">
-                <div class="small-12 column">
-                    <div class="title-box"><span>Каталог</span> продукции</div>
-                    <div class="subtitle-box">
-                        ТОО «Снабжающая Компания ESPCompany» рада приветствовать Вас на нашем сайте! Мы надеемся, что наша продукция будет полезна для Вас и поможет развитию и продвижению Вашего бизнеса. Отличительной особенностью поставляемой продукции является оптимальное соотношение цена/качество.<br>
-                        <span>Цены на сайте могут отличаться от прайса, просим уточнять у менеджеров компании!</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="show-for-large large-3 column">
-                    <div class="menu-catalog">
-                        <div class="menu-catalog__title">
-                            <img src="{% static 'img/bitrix/logo_3.png' %}" alt="">
-                            <span>Каталог</span>
-                        </div>
-                        <div class="catalog-list">
-                            <div class="catalog-list__section">
-                                <div class="catalog-section__menu ajax_menu_wrapper">
-                                    <ul class="menu-catalog__items lvl-1">
-                                        {% include 'catalog/_menu_recursive.html' with categories=root_categories level=1 %}
-                                    </ul>
+                </header>
+                <div class="content-box">
+                    <div id="catalog">
+                        <div class="row">
+                            <div class="small-12 column">
+                                <div class="title-box"><span>Каталог</span> продукции</div>
+                                <div class="subtitle-box">
+                                    ТОО «Снабжающая Компания ESPCompany» рада приветствовать Вас на нашем сайте! Мы надеемся, что наша продукция будет полезна для Вас и поможет развитию и продвижению Вашего бизнеса. Отличительной особенностью поставляемой продукции является оптимальное соотношение цена/качество.<br>
+                                    <span>Цены на сайте могут отличаться от прайса, просим уточнять у менеджеров компании!</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="small-12 large-9 column">
-                    <div class="catalog-box">
-                        {% comment %} Кнопка для открытия мобильного меню каталога {% endcomment %}
-                        <div class="catalog-device-button hide-for-large" data-toggle="offCanvasRightMenu" aria-controls="offCanvasRightMenu">
-                            <button type="button">
-                                <i class="icon-menu"></i>
-                                <span>Смотреть каталог</span>
-                                <i class="icon-arrow-down"></i>
-                            </button>
-                        </div>
-                        {% comment %} Скрытая структура категорий для JavaScript - используем visibility для загрузки изображений {% endcomment %}
-                        {% if categories %}
-                        <div style="visibility: hidden; position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
-                            {% include 'catalog/_category_section.html' with categories=categories %}
-                        </div>
-                        {% endif %}
-
-                        {% comment %} Контейнер для товаров - скрыт по умолчанию {% endcomment %}
-                        {% if all_products %}
-                        <div class="row small-up-1 medium-up-2 large-up-3 catalog-cards" id="products-container" style="display: none;">
-                            {% for product in all_products %}
-                            <div class="column column-block product-item" data-product="{{ product.sku }}" data-section-id="{{ product.section_id|default:'' }}" style="display: none;">
-                                <div class="product-box" data-product="{{ product.sku }}" data-section-id="{{ product.section_id|default:'' }}">
-                                    <div class="product-box__inner">
-                                        <div class="product-box__photo-wrap">
-                                            <a href="javascript:;" class="dev_product_detail product-box__photo" data-id="{{ product.sku }}">
-                                                <img class="dev_fly_cart" src="{{ product.image_url }}" alt="{{ product.title }}" data-id="{{ product.sku }}" loading="eager">
-                                            </a>
-                                        </div>
-                                        <div class="product-box__content">
-                                            <div class="product-box__title">{{ product.title }}</div>
-                                            <div class="product-box__meta">
-                                                {% if product.sku %}
-                                                <div class="product-box__sku"><strong>Маркировка:</strong> {{ product.sku }}</div>
-                                                {% endif %}
-                                                {% if product.wire_section %}
-                                                <div><strong>Сечение провода:</strong> {{ product.wire_section }}</div>
-                                                {% endif %}
-                                                {% if product.load_limit %}
-                                                <div><strong>Предельная нагрузка:</strong> {{ product.load_limit }}</div>
-                                                {% endif %}
-                                                {% if product.unit %}
-                                                <div><strong>Ед. изм.:</strong> {{ product.unit }}</div>
-                                                {% endif %}
-                                            </div>
-                                            {% if product.display_price|floatformat:0 != "0" or product.price_retail and product.price_retail|floatformat:0 != "0" %}
-                                            <div class="product-box__prices">
-                                                {% if product.display_price|floatformat:0 != "0" %}
-                                                <div class="product-box__price">
-                                                    <span class="product-box__price-label">Спец. цена</span>
-                                                    <span class="product-box__price-value">{{ product.display_price|floatformat:0|intcomma }} тг</span>
-                                                </div>
-                                                {% endif %}
-                                                {% if product.price_retail and product.price_retail|floatformat:0 != "0" %}
-                                                <div class="product-box__price product-box__price--secondary">
-                                                    <span class="product-box__price-label">Розница</span>
-                                                    <span class="product-box__price-value">{{ product.price_retail|floatformat:0|intcomma }} тг</span>
-                                                </div>
-                                                {% endif %}
-                                            </div>
-                                            {% endif %}
-                                            <div class="product-box__controls">
-                                                <div class="product-box__qty">
-                                                    <button class="button-qty minus" type="button" data-action="decrease">-</button>
-                                                    <input type="number" class="product-count" name="quantity-{{ product.pk }}" value="1" min="1">
-                                                    <button class="button-qty plus" type="button" data-action="increase">+</button>
-                                                </div>
-                                                <div class="product-box__button">
-                                                    <a href="javascript:;" class="button-ordinary dev_to_cart" data-id="{{ product.sku|default:product.pk }}" data-product-id="{{ product.pk }}" data-title="{{ product.title }}" data-sku="{{ product.sku }}" data-price="{{ product.display_price }}" data-image="{{ product.image_url }}">
-                                                        В корзину
-                                                    </a>
-                                                </div>
+                        <div class="row">
+                            <div class="show-for-large large-3 column">
+                                <div class="menu-catalog">
+                                    <div class="menu-catalog__title">
+                                        <img src="{% static 'img/bitrix/logo_3.png' %}" alt="">
+                                        <span>Каталог</span>
+                                    </div>
+                                    <div class="catalog-list">
+                                        <div class="catalog-list__section">
+                                            <div class="catalog-section__menu ajax_menu_wrapper">
+                                                <ul class="menu-catalog__items lvl-1">
+                                                    {% include 'catalog/_menu_recursive.html' with categories=root_categories level=1 %}
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {% endfor %}
+                            <div class="small-12 large-9 column">
+                                <div class="catalog-box">
+                                    {% comment %} Кнопка для открытия мобильного меню каталога {% endcomment %}
+                                    <div class="catalog-device-button hide-for-large" data-toggle="offCanvasRightMenu" aria-controls="offCanvasRightMenu">
+                                        <button type="button">
+                                            <i class="icon-menu"></i>
+                                            <span>Смотреть каталог</span>
+                                            <i class="icon-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                    {% comment %} Скрытая структура категорий для JavaScript - используем visibility для загрузки изображений {% endcomment %}
+                                    {% if categories %}
+                                    <div style="visibility: hidden; position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
+                                        {% include 'catalog/_category_section.html' with categories=categories %}
+                                    </div>
+                                    {% endif %}
+
+                                    {% comment %} Контейнер для товаров - скрыт по умолчанию {% endcomment %}
+                                    {% if all_products %}
+                                    <div class="row small-up-1 medium-up-2 large-up-3 catalog-cards" id="products-container" style="display: none;">
+                                        {% for product in all_products %}
+                                        <div class="column column-block product-item" data-product="{{ product.sku }}" data-section-id="{{ product.section_id|default:'' }}" style="display: none;">
+                                            <div class="product-box" data-product="{{ product.sku }}" data-section-id="{{ product.section_id|default:'' }}">
+                                                <div class="product-box__inner">
+                                                    <div class="product-box__photo-wrap">
+                                                        <a href="javascript:;" class="dev_product_detail product-box__photo" data-id="{{ product.sku }}">
+                                                            <img class="dev_fly_cart" src="{{ product.image_url }}" alt="{{ product.title }}" data-id="{{ product.sku }}" loading="eager">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-box__content">
+                                                        <div class="product-box__title">{{ product.title }}</div>
+                                                        <div class="product-box__meta">
+                                                            {% if product.sku %}
+                                                            <div class="product-box__sku"><strong>Маркировка:</strong> {{ product.sku }}</div>
+                                                            {% endif %}
+                                                            {% if product.wire_section %}
+                                                            <div><strong>Сечение провода:</strong> {{ product.wire_section }}</div>
+                                                            {% endif %}
+                                                            {% if product.load_limit %}
+                                                            <div><strong>Предельная нагрузка:</strong> {{ product.load_limit }}</div>
+                                                            {% endif %}
+                                                            {% if product.unit %}
+                                                            <div><strong>Ед. изм.:</strong> {{ product.unit }}</div>
+                                                            {% endif %}
+                                                        </div>
+                                                        {% if product.display_price|floatformat:0 != "0" or product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                                                        <div class="product-box__prices">
+                                                            {% if product.display_price|floatformat:0 != "0" %}
+                                                            <div class="product-box__price">
+                                                                <span class="product-box__price-label">Спец. цена</span>
+                                                                <span class="product-box__price-value">{{ product.display_price|floatformat:0|intcomma }} тг</span>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                                                            <div class="product-box__price product-box__price--secondary">
+                                                                <span class="product-box__price-label">Розница</span>
+                                                                <span class="product-box__price-value">{{ product.price_retail|floatformat:0|intcomma }} тг</span>
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="product-box__controls">
+                                                            <div class="product-box__qty">
+                                                                <button class="button-qty minus" type="button" data-action="decrease">-</button>
+                                                                <input type="number" class="product-count" name="quantity-{{ product.pk }}" value="1" min="1">
+                                                                <button class="button-qty plus" type="button" data-action="increase">+</button>
+                                                            </div>
+                                                            <div class="product-box__button">
+                                                                <a href="javascript:;" class="button-ordinary dev_to_cart" data-id="{{ product.sku|default:product.pk }}" data-product-id="{{ product.pk }}" data-title="{{ product.title }}" data-sku="{{ product.sku }}" data-price="{{ product.display_price }}" data-image="{{ product.image_url }}">
+                                                                    В корзину
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
 
 
-                        </div>
-                        {% if all_products|length > 24 %}
+                                    </div>
+                                    {% if all_products|length > 24 %}
 
-                        {% endif %}
-                        {% else %}
-                        <div class="callout warning">
-                            Каталог пока пуст. Добавьте товары через админ-панель или импортируйте из CSV.
-                        </div>
-                        {% endif %}
+                                    {% endif %}
+                                    {% else %}
+                                    <div class="callout warning">
+                                        Каталог пока пуст. Добавьте товары через админ-панель или импортируйте из CSV.
+                                    </div>
+                                    {% endif %}
 
-                        {% if not categories and not all_products %}
-                        <div class="callout warning">
-                            Каталог пока пуст. Добавьте категории и товары через админ-панель.
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="company">
-            <div class="row">
-                <div class="small-12 medium-10 large-6 column">
-                    <div class="title-box">
-                        <span>Снабжающая</span> Компания ESPCompany </div>
-                    <div class="subtitle-box">
-                        ТОО «Снабжающая Компания ESPCompany» работает на рынке Казахстана с 2019 года и специализируется на поставки и реализации кабельно-проводниковой, электротехнической продукции из стран СНГ, а также поставками металлоконструкций для ЛЭП. </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 medium-12 large-4 column">
-                    <div class="row">
-                        <div class="small-12 medium-6 large-12 column wow bounceInLeft">
-                            <div class="check-item">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
+                                    {% if not categories and not all_products %}
+                                    <div class="callout warning">
+                                        Каталог пока пуст. Добавьте категории и товары через админ-панель.
+                                    </div>
+                                    {% endif %}
                                 </div>
-                                <div class="check-item__text">
-                                    На сегодняшний день, динамично развиваясь, наша компания, стала <span>гарантом профессионального обслуживания</span> клиентов различного уровня и зарекомендовала себя надежным поставщиком качественной продукции </div>
                             </div>
-                        </div>
-                        <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay=".5s">
-                            <div class="check-item">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>Мы продаем оптом и в розницу по лучшим ценам на рынке</span> </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay="1s">
-                            <div class="check-item">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>Осуществялем доставку</span>
-                                    железнодорожным или автотранспортом в оговоренные сроки </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay="1.5s">
-                            <div class="check-item check-item--last">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>Весь товар хранится на складе согласно всем техническим и санитарным нормам</span> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="small-12 medium-12 large-4 column wow zoomIn">
-                    <div class="animate-box">
-                        <div class="animate-box__center"></div>
-                        <div class="animate-box__circle"></div>
-                        <div class="animate-box__circle animate-box__circle--2"></div>
-                        <div class="animate-box__circle animate-box__circle--3"></div>
-                        <div class="animate-box__circle animate-box__circle--4"></div>
-                        <img src="{% static 'img/bitrix/logo_3.png' %}" alt="">
-                    </div>
-                </div>
-                <div class="small-12 medium-12 large-4 column">
-                    <div class="row">
-                        <div class="small-12 medium-12 large-12 column wow bounceInRight">
-                            <div class="check-item">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>Вся продукция компании проходит многоступенчатый контроль качества</span>
-                                    на всех этапах производственного цикла </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-12 large-12 column wow bounceInRight" data-wow-delay=".5s">
-                            <div class="check-item check-item--last">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>Имея достаточные складские запасы материалов,</span> мы рады предложить Вам широкий ассортимент различных электротехнических, электроизоляционных, светотехнических товаров, ведущих производителей стран СНГ как со склада в г. Караганды, так и под заказ, в кратчайшие сроки, в соответствии с требованиями заказчика. </div>
-                            </div>
-
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row align-right">
-                <div class="small-12 medium-12 large-11 column">
-                    <div class="row collapse">
-                        <div class="small-12 medium-12 large-8 column wow fadeInLeft">
-                            <div class="personal-box">
-                                <div class="personal-box__title">
-                                    Мы открыты и ищем партнеров, готовы к<br class="show-for-large">
-                                    взаимовыгодному сотрудничесву </div>
-                                <div class="personal-box__text">
-                                    По вопросам продукции, партнерства и условий сотрудничества пишите,
-                                    звоните менеджеру компании: </div>
-
-
+                    <div id="company">
+                        <div class="row">
+                            <div class="small-12 medium-10 large-6 column">
+                                <div class="title-box">
+                                    <span>Снабжающая</span> Компания ESPCompany </div>
+                                <div class="subtitle-box">
+                                    ТОО «Снабжающая Компания ESPCompany» работает на рынке Казахстана с 2019 года и специализируется на поставки и реализации кабельно-проводниковой, электротехнической продукции из стран СНГ, а также поставками металлоконструкций для ЛЭП. </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 medium-12 large-4 column">
                                 <div class="row">
-                                    <div class="small-12 medium-6 large-6 column">
-                                        <div id="bx_1373509569_43" class="personal-item">
-                                            <div class="personal-item__img">
-                                                <img src="{% static 'img/bitrix/manager.png' %}" alt="Жанна">
+                                    <div class="small-12 medium-6 large-12 column wow bounceInLeft">
+                                        <div class="check-item">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
                                             </div>
-                                            <div class="personal-item__content">
-                                                <div class="personal-item__name">Жанна</div>
-                                                <div class="personal-item__position">
-                                                    Менеджер компании<br />
-                                                    ESPCompany </div>
-                                                <div class="personal-item__contacts">
-                                                    <span>
-                                                        <a href="tel:+77029239300">+7 702 923 93 00</a>
-                                                        <a href="mailto:espcompany.a@gmail.com">espcompany.a@gmail.com</a>
-                                                        <a href="https://wa.me/77029239300" target="_blank"><i class="icon-whatsup"></i></a>
-                                                    </span>
+                                            <div class="check-item__text">
+                                                На сегодняшний день, динамично развиваясь, наша компания, стала <span>гарантом профессионального обслуживания</span> клиентов различного уровня и зарекомендовала себя надежным поставщиком качественной продукции </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay=".5s">
+                                        <div class="check-item">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>Мы продаем оптом и в розницу по лучшим ценам на рынке</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay="1s">
+                                        <div class="check-item">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>Осуществялем доставку</span>
+                                                железнодорожным или автотранспортом в оговоренные сроки </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-12 column wow bounceInLeft" data-wow-delay="1.5s">
+                                        <div class="check-item check-item--last">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>Весь товар хранится на складе согласно всем техническим и санитарным нормам</span> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="small-12 medium-12 large-4 column wow zoomIn">
+                                <div class="animate-box">
+                                    <div class="animate-box__center"></div>
+                                    <div class="animate-box__circle"></div>
+                                    <div class="animate-box__circle animate-box__circle--2"></div>
+                                    <div class="animate-box__circle animate-box__circle--3"></div>
+                                    <div class="animate-box__circle animate-box__circle--4"></div>
+                                    <img src="{% static 'img/bitrix/logo_3.png' %}" alt="">
+                                </div>
+                            </div>
+                            <div class="small-12 medium-12 large-4 column">
+                                <div class="row">
+                                    <div class="small-12 medium-12 large-12 column wow bounceInRight">
+                                        <div class="check-item">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>Вся продукция компании проходит многоступенчатый контроль качества</span>
+                                                на всех этапах производственного цикла </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-12 large-12 column wow bounceInRight" data-wow-delay=".5s">
+                                        <div class="check-item check-item--last">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>Имея достаточные складские запасы материалов,</span> мы рады предложить Вам широкий ассортимент различных электротехнических, электроизоляционных, светотехнических товаров, ведущих производителей стран СНГ как со склада в г. Караганды, так и под заказ, в кратчайшие сроки, в соответствии с требованиями заказчика. </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-right">
+                            <div class="small-12 medium-12 large-11 column">
+                                <div class="row collapse">
+                                    <div class="small-12 medium-12 large-8 column wow fadeInLeft">
+                                        <div class="personal-box">
+                                            <div class="personal-box__title">
+                                                Мы открыты и ищем партнеров, готовы к<br class="show-for-large">
+                                                взаимовыгодному сотрудничесву </div>
+                                            <div class="personal-box__text">
+                                                По вопросам продукции, партнерства и условий сотрудничества пишите,
+                                                звоните менеджеру компании: </div>
+
+
+                                            <div class="row">
+                                                <div class="small-12 medium-6 large-6 column">
+                                                    <div id="bx_1373509569_43" class="personal-item">
+                                                        <div class="personal-item__img">
+                                                            <img src="{% static 'img/bitrix/manager.png' %}" alt="Жанна">
+                                                        </div>
+                                                        <div class="personal-item__content">
+                                                            <div class="personal-item__name">Жанна</div>
+                                                            <div class="personal-item__position">
+                                                                Менеджер компании<br />
+                                                                ESPCompany </div>
+                                                            <div class="personal-item__contacts">
+                                                                <span>
+                                                                    <a href="tel:+77029239300">+7 702 923 93 00</a>
+                                                                    <a href="mailto:espcompany.a@gmail.com">espcompany.a@gmail.com</a>
+                                                                    <a href="https://wa.me/77029239300" target="_blank"><i class="icon-whatsup"></i></a>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-12 large-4 column wow fadeInRight" data-wow-delay=".5s">
+                                        <div class="warning-box">
+                                            <div class="warning-box__title">Обратный звонок</div>
+                                            <div class="warning-box__text">
+                                                Или воспользуйтесь услугой обратный звонок и
+                                                мы перезвоним вам в течении 15 минут </div>
+                                            <div class="warning-box__button">
+                                                <a href="javascript:;" class="button" data-open="dev_modal_callback"><i class="icon-hand"></i><span>Перезвонить</span></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="small-12 medium-12 large-4 column wow fadeInRight" data-wow-delay=".5s">
-                            <div class="warning-box">
-                                <div class="warning-box__title">Обратный звонок</div>
-                                <div class="warning-box__text">
-                                    Или воспользуйтесь услугой обратный звонок и
-                                    мы перезвоним вам в течении 15 минут </div>
-                                <div class="warning-box__button">
-                                    <a href="javascript:;" class="button" data-open="dev_modal_callback"><i class="icon-hand"></i><span>Перезвонить</span></a>
+                            <div class="small-12 medium-12 large-11 column wow fadeInUp" data-wow-delay=".5s">
+                                <div class="company-slogan">
+                                    <div class="company-slogan__title"></div>
+                                    <div class="company-slogan__text"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="small-12 medium-12 large-11 column wow fadeInUp" data-wow-delay=".5s">
-                    <div class="company-slogan">
-                        <div class="company-slogan__title"></div>
-                        <div class="company-slogan__text"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="howWorking">
-            <div class="row">
-                <div class="small-12 medium-12 large-4 column wow fadeInLeft">
-                    <div class="how-working">
-                        <div class="title-box">
-                            <span>Как</span> мы работаем </div>
-                        <div class="subtitle-box">
-                            Знакомьтесь с этапами работ на сайте. Пройдите 5 шагов и
-                            получите выбранную продукцию. </div>
-                        <p>
-                            Или просто отправьте заявку на консультацию и мы перезвоним вам в течении 15
-                            мин. </p>
-                        <div class="how-working__button">
-                            <button class="button" data-open="dev_modal_consultation"><i class="icon-hand"></i><span> Проконсультироваться</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="small-12 medium-12 large-8 column">
-                    <div class="row">
-                        <div class="small-12 medium-6 large-6 column wow zoomInUp">
-                            <div class="how-item">
-                                <div class="how-item__icon">
-                                    <div class="how-item__count">1</div>
-                                    <img src="{% static 'img/bitrix/kak_rabotaem_1.svg' %}" alt="">
+                    <div id="howWorking">
+                        <div class="row">
+                            <div class="small-12 medium-12 large-4 column wow fadeInLeft">
+                                <div class="how-working">
+                                    <div class="title-box">
+                                        <span>Как</span> мы работаем </div>
+                                    <div class="subtitle-box">
+                                        Знакомьтесь с этапами работ на сайте. Пройдите 5 шагов и
+                                        получите выбранную продукцию. </div>
+                                    <p>
+                                        Или просто отправьте заявку на консультацию и мы перезвоним вам в течении 15
+                                        мин. </p>
+                                    <div class="how-working__button">
+                                        <button class="button" data-open="dev_modal_consultation"><i class="icon-hand"></i><span> Проконсультироваться</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="how-item__content">
-                                    <div class="how-item__title">
-                                        Дождитесь подтверждения заказа менеджером </div>
-                                    <div class="how-item__text">
-                                        Наш ассортимент обширен! Вы обязательно
-                                        найдете то что искали по лучшей цене. <a href="#catalog" data-smooth-scroll>
-                                            Перейти в каталог </a>
+                            </div>
+                            <div class="small-12 medium-12 large-8 column">
+                                <div class="row">
+                                    <div class="small-12 medium-6 large-6 column wow zoomInUp">
+                                        <div class="how-item">
+                                            <div class="how-item__icon">
+                                                <div class="how-item__count">1</div>
+                                                <img src="{% static 'img/bitrix/kak_rabotaem_1.svg' %}" alt="">
+                                            </div>
+                                            <div class="how-item__content">
+                                                <div class="how-item__title">
+                                                    Дождитесь подтверждения заказа менеджером </div>
+                                                <div class="how-item__text">
+                                                    Наш ассортимент обширен! Вы обязательно
+                                                    найдете то что искали по лучшей цене. <a href="#catalog" data-smooth-scroll>
+                                                        Перейти в каталог </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-6 column wow zoomInUp">
+                                        <div class="how-item">
+                                            <div class="how-item__icon">
+                                                <div class="how-item__count">2</div>
+                                                <img src="{% static 'img/bitrix/kak_rabotaem_2.svg' %}" alt="">
+                                            </div>
+                                            <div class="how-item__content">
+                                                <div class="how-item__title">
+                                                    Добавьте в корзину, заполните и отправьте
+                                                    форму заказа </div>
+                                                <div class="how-item__text">
+                                                    Всю дополнительную информацию о заказе
+                                                    уточнит наш менеджер. Мы экономим ваше время! </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-6 column wow zoomInUp">
+                                        <div class="how-item">
+                                            <div class="how-item__icon">
+                                                <div class="how-item__count">3</div>
+                                                <img src="{% static 'img/bitrix/kak_rabotaem_3.svg' %}" alt="">
+                                            </div>
+                                            <div class="how-item__content">
+                                                <div class="how-item__title">
+                                                    Дождитесь подтверждения заказа менеджером </div>
+                                                <div class="how-item__text">
+                                                    Наш менеджер свяжется с вами в рабочее
+                                                    время. Обычно это происходит в течение 15 минут после заказа </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-6 column wow zoomInUp">
+                                        <div class="how-item">
+                                            <div class="how-item__icon">
+                                                <div class="how-item__count">4</div>
+                                                <img src="{% static 'img/bitrix/kak_rabotaem_4.svg' %}" alt="">
+                                            </div>
+                                            <div class="how-item__content">
+                                                <div class="how-item__title">
+                                                    Оплатите заказ удобным для вас способом </div>
+                                                <div class="how-item__text">
+                                                    Мы принимаем наличный и безналичный расчет
+                                                    (карты Visa и MasterCard) </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-6 column wow zoomInUp">
+                                        <div class="how-item">
+                                            <div class="how-item__icon">
+                                                <div class="how-item__count">5</div>
+                                                <img src="{% static 'img/bitrix/kak_rabotaem_5.svg' %}" alt="">
+                                            </div>
+                                            <div class="how-item__content">
+                                                <div class="how-item__title">
+                                                    Получите ваш заказ от курьерской службы </div>
+                                                <div class="how-item__text">
+                                                    Мы доставляем заказы транспортной компанией
+                                                    (подберем на выгодных условиях) </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="small-12 medium-6 large-6 column wow zoomInUp">
-                            <div class="how-item">
-                                <div class="how-item__icon">
-                                    <div class="how-item__count">2</div>
-                                    <img src="{% static 'img/bitrix/kak_rabotaem_2.svg' %}" alt="">
-                                </div>
-                                <div class="how-item__content">
-                                    <div class="how-item__title">
-                                        Добавьте в корзину, заполните и отправьте
-                                        форму заказа </div>
-                                    <div class="how-item__text">
-                                        Всю дополнительную информацию о заказе
-                                        уточнит наш менеджер. Мы экономим ваше время! </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-6 column wow zoomInUp">
-                            <div class="how-item">
-                                <div class="how-item__icon">
-                                    <div class="how-item__count">3</div>
-                                    <img src="{% static 'img/bitrix/kak_rabotaem_3.svg' %}" alt="">
-                                </div>
-                                <div class="how-item__content">
-                                    <div class="how-item__title">
-                                        Дождитесь подтверждения заказа менеджером </div>
-                                    <div class="how-item__text">
-                                        Наш менеджер свяжется с вами в рабочее
-                                        время. Обычно это происходит в течение 15 минут после заказа </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-6 column wow zoomInUp">
-                            <div class="how-item">
-                                <div class="how-item__icon">
-                                    <div class="how-item__count">4</div>
-                                    <img src="{% static 'img/bitrix/kak_rabotaem_4.svg' %}" alt="">
-                                </div>
-                                <div class="how-item__content">
-                                    <div class="how-item__title">
-                                        Оплатите заказ удобным для вас способом </div>
-                                    <div class="how-item__text">
-                                        Мы принимаем наличный и безналичный расчет
-                                        (карты Visa и MasterCard) </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-6 column wow zoomInUp">
-                            <div class="how-item">
-                                <div class="how-item__icon">
-                                    <div class="how-item__count">5</div>
-                                    <img src="{% static 'img/bitrix/kak_rabotaem_5.svg' %}" alt="">
-                                </div>
-                                <div class="how-item__content">
-                                    <div class="how-item__title">
-                                        Получите ваш заказ от курьерской службы </div>
-                                    <div class="how-item__text">
-                                        Мы доставляем заказы транспортной компанией
-                                        (подберем на выгодных условиях) </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div id="faq">
-            <div class="row align-center">
-                <div class="small-12 medium-11 large-8 column">
-                    <div class="title-box">
-                        <span>Часто</span>-задаваемые вопросы </div>
+                    <div id="faq">
+                        <div class="row align-center">
+                            <div class="small-12 medium-11 large-8 column">
+                                <div class="title-box">
+                                    <span>Часто</span>-задаваемые вопросы </div>
 
 
 
-                    <div id="bx_3485106786_44" class="faq-box wow zoomInUp">
-                        <div class="faq-box__head">
-                            <span>1. Помогите подобрать арматуру для провода СИП-4 2х25.</span>
-                            <div class="faq-box__icon">
-                                <i class="icon-arrow-down"></i>
-                            </div>
-                        </div>
-                        <div class="faq-box__body">
-                            <p>Добрый день, ! Для провода СИП-4 2х25 нужна арматура такая как зажимы, проколы, крюки, возможно лента бандажная. Для конкретного просчета и выбора арматуры свяжитесь с нами за указанными номерами телефона! Будем рады помочь!</p>
-                        </div>
-                    </div>
-                    <div id="bx_3485106786_45" class="faq-box wow zoomInUp">
-                        <div class="faq-box__head">
-                            <span>2. Раскрученные бренды на рынке: Ensto, Sicame, Niled, Tyco и продукцию данных компаний потребляют многие заказчики. Какими преимуществами обладает наша арматура для СИП?</span>
-                            <div class="faq-box__icon">
-                                <i class="icon-arrow-down"></i>
-                            </div>
-                        </div>
-                        <div class="faq-box__body">
-                            <p>Несомненно, для выхода на рынок мы должны были предложить продукт, обладающий рядом преимуществ, по сравнению с зарубежными аналогами. И мы этого достигли:</p>
-                            <ul>
-                                <li>а) ценовая составляющая. Стоимость на 20-30% ниже зарубежных аналогов;</li>
-
-                                <li>б) минимальные сроки поставки. </li>
-
-                                <li>в) полная адаптация к проводу СИП, производимому в России и других странах;</li>
-
-                                <li>г) проектирование и производство арматуры были соблюдены с учетом климатических требований страны.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="bx_3485106786_46" class="faq-box wow zoomInUp">
-                        <div class="faq-box__head">
-                            <span>3. Возможен ли самовывоз заказанного товара?</span>
-                            <div class="faq-box__icon">
-                                <i class="icon-arrow-down"></i>
-                            </div>
-                        </div>
-                        <div class="faq-box__body">
-                            Вы можете самостоятельно забрать заказанные товары в нашем офисе или со склада. </div>
-                    </div>
-                    <div id="bx_3485106786_66" class="faq-box wow zoomInUp">
-                        <div class="faq-box__head">
-                            <span>4. Здравствуйте, меня интересует электротовары оптом. Спасибо.</span>
-                            <div class="faq-box__icon">
-                                <i class="icon-arrow-down"></i>
-                            </div>
-                        </div>
-                        <div class="faq-box__body">
-                            Спасибо Вам за интерес к сотрудничеству с нашей компанией. По вопросам оптовых закупок вы можете обратиться к нашим менеджерам , все контактные телефоны в разделе «Контакты». </div>
-                    </div>
-                    <div id="bx_3485106786_67" class="faq-box wow zoomInUp">
-                        <div class="faq-box__head">
-                            <span>5. Вы предоставляете гарантию на кабель и другую продукцию?</span>
-                            <div class="faq-box__icon">
-                                <i class="icon-arrow-down"></i>
-                            </div>
-                        </div>
-                        <div class="faq-box__body">
-                            На всю продукцию&nbsp;&nbsp;реализуемую нашей компанией предоставляется гарантия качества. В зависимости от продукции предоставляется гарантия от 1 до 7 лет. Компания очень внимательно следит за выполнением своих обязательств перед клиентом в области качества продукции. Компания не сотрудничает с непроверенными поставщиками, поставляющими продукцию низкого либо сомнительного качества. </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-        </div>
-        <div id="selectionCatalog">
-            <div class="row align-center">
-                <div class="small-12 medium-10 large-8 column">
-                    <div class="row">
-                        <div class="small-12 medium-12 large-6 column">
-                            <div class="title-box">
-                                <span>Подберем</span> продукцию индивидуально<br class="show-for-large"> для вас! </div>
-                            <div class="subtitle-box">
-                                Для этого оставьте заявку и получите бонусом: </div>
-                            <div class="check-item check-item--middle">
-                                <div class="check-item__icon">
-                                    <i class="icon-check-2">
-                                        <span class="path1"></span><span class="path2"></span>
-                                    </i>
-                                </div>
-                                <div class="check-item__text">
-                                    <span>полный и удобный прайс-лист компании</span> </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-12 large-6 column">
-                            <div id="formSelection">
-
-
-                                <form method="post" class="form-box js-lead-form" data-abide novalidate data-lead-type="price_request" data-success-text="Спасибо! Мы свяжемся с вами.">
-                                    <div class="input-box">
-                                        <i class="icon-fio"></i>
-                                        <input type="text" name="NAME" value="" class="input-box__input" required pattern="fio" autocomplete="off">
-                                        <label class="input-box__text">ФИО</label>
+                                <div id="bx_3485106786_44" class="faq-box wow zoomInUp">
+                                    <div class="faq-box__head">
+                                        <span>1. Помогите подобрать арматуру для провода СИП-4 2х25.</span>
+                                        <div class="faq-box__icon">
+                                            <i class="icon-arrow-down"></i>
+                                        </div>
                                     </div>
-                                    <div class="input-box">
-                                        <i class="icon-email"></i>
-                                        <input type="text" name="EMAIL" value="" class="input-box__input" required pattern="email" autocomplete="off">
-                                        <label class="input-box__text">E-mail</label>
+                                    <div class="faq-box__body">
+                                        <p>Добрый день, ! Для провода СИП-4 2х25 нужна арматура такая как зажимы, проколы, крюки, возможно лента бандажная. Для конкретного просчета и выбора арматуры свяжитесь с нами за указанными номерами телефона! Будем рады помочь!</p>
                                     </div>
-                                    <div class="input-box">
-                                        <i class="icon-phone-border"></i>
-                                        <input type="text" name="PHONE" value="" class="input-box__input is-phone" required autocomplete="off">
-                                        <label class="input-box__text">Телефон</label>
-                                    </div>
-
-                                    <div class="form-box__agreement">
-                                        <label class="checkbox">
-                                            <input type="checkbox" checked required>
-                                            <div class="checkbox__text">
-                                                Согласен с условиями
-                                                <a href="javascript:;" data-open="dev_modal_policy">обработки
-                                                    персональных данных</a></div>
-                                        </label>
-                                    </div>
-
-                                    <div class="form-box__button">
-                                        <button class="button"><i class="icon-hand"></i><span>Отправить</span></button>
-                                    </div>
-                                    <div class="form-box__message" data-role="form-message"></div>
-                                </form>
-
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="contact">
-            <div class="row">
-                <div class="column">
-                    <div class="title-box">
-                        <span>Контактные</span> данные </div>
-                    <div class="row">
-                        <div class="small-12 medium-6 large-3 column wow zoomInDown">
-                            <div class="contact-box">
-                                <div class="contact-box__icon">
-                                    <i class="icon-phone"></i>
                                 </div>
-                                <div class="contact-box__title">Телефоны</div>
-                                <div class="contact-box__text">
-                                    <!--<a href="tel:+77024286912">+7 702 428 69 12</a>--> <br class="show-for-small-only">
-                                    <a href="tel:+77029239300">+7 702 923 93 00</a> </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-3 column wow zoomInDown" data-wow-delay=".5s">
-                            <div class="contact-box">
-                                <div class="contact-box__icon">
-                                    <i class="icon-mail"></i>
+                                <div id="bx_3485106786_45" class="faq-box wow zoomInUp">
+                                    <div class="faq-box__head">
+                                        <span>2. Раскрученные бренды на рынке: Ensto, Sicame, Niled, Tyco и продукцию данных компаний потребляют многие заказчики. Какими преимуществами обладает наша арматура для СИП?</span>
+                                        <div class="faq-box__icon">
+                                            <i class="icon-arrow-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-box__body">
+                                        <p>Несомненно, для выхода на рынок мы должны были предложить продукт, обладающий рядом преимуществ, по сравнению с зарубежными аналогами. И мы этого достигли:</p>
+                                        <ul>
+                                            <li>а) ценовая составляющая. Стоимость на 20-30% ниже зарубежных аналогов;</li>
+
+                                            <li>б) минимальные сроки поставки. </li>
+
+                                            <li>в) полная адаптация к проводу СИП, производимому в России и других странах;</li>
+
+                                            <li>г) проектирование и производство арматуры были соблюдены с учетом климатических требований страны.</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="contact-box__title">Почта</div>
-                                <div class="contact-box__text">
-                                    <a href="mailto:espcompany.a@gmail.com">espcompany.a@gmail.com</a> </div>
-                            </div>
-                        </div>
-                        <div class="small-12 medium-6 large-3 column wow zoomInDown" data-wow-delay="1s">
-                            <div class="contact-box">
-                                <div class="contact-box__icon">
-                                    <i class="icon-time"></i>
+                                <div id="bx_3485106786_46" class="faq-box wow zoomInUp">
+                                    <div class="faq-box__head">
+                                        <span>3. Возможен ли самовывоз заказанного товара?</span>
+                                        <div class="faq-box__icon">
+                                            <i class="icon-arrow-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-box__body">
+                                        Вы можете самостоятельно забрать заказанные товары в нашем офисе или со склада. </div>
                                 </div>
-                                <div class="contact-box__title">Время работы</div>
-                                <div class="contact-box__text">Пн – Пт: с 9:00 до 17:00</div>
+                                <div id="bx_3485106786_66" class="faq-box wow zoomInUp">
+                                    <div class="faq-box__head">
+                                        <span>4. Здравствуйте, меня интересует электротовары оптом. Спасибо.</span>
+                                        <div class="faq-box__icon">
+                                            <i class="icon-arrow-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-box__body">
+                                        Спасибо Вам за интерес к сотрудничеству с нашей компанией. По вопросам оптовых закупок вы можете обратиться к нашим менеджерам , все контактные телефоны в разделе «Контакты». </div>
+                                </div>
+                                <div id="bx_3485106786_67" class="faq-box wow zoomInUp">
+                                    <div class="faq-box__head">
+                                        <span>5. Вы предоставляете гарантию на кабель и другую продукцию?</span>
+                                        <div class="faq-box__icon">
+                                            <i class="icon-arrow-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-box__body">
+                                        На всю продукцию&nbsp;&nbsp;реализуемую нашей компанией предоставляется гарантия качества. В зависимости от продукции предоставляется гарантия от 1 до 7 лет. Компания очень внимательно следит за выполнением своих обязательств перед клиентом в области качества продукции. Компания не сотрудничает с непроверенными поставщиками, поставляющими продукцию низкого либо сомнительного качества. </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                    <div id="selectionCatalog">
+                        <div class="row align-center">
+                            <div class="small-12 medium-10 large-8 column">
+                                <div class="row">
+                                    <div class="small-12 medium-12 large-6 column">
+                                        <div class="title-box">
+                                            <span>Подберем</span> продукцию индивидуально<br class="show-for-large"> для вас! </div>
+                                        <div class="subtitle-box">
+                                            Для этого оставьте заявку и получите бонусом: </div>
+                                        <div class="check-item check-item--middle">
+                                            <div class="check-item__icon">
+                                                <i class="icon-check-2">
+                                                    <span class="path1"></span><span class="path2"></span>
+                                                </i>
+                                            </div>
+                                            <div class="check-item__text">
+                                                <span>полный и удобный прайс-лист компании</span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-12 large-6 column">
+                                        <div id="formSelection">
 
-        <div id="map">
-            <div class="map-container">
-                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A8aa16208d19a177af4e47eaf333cc93e65622a6db1ba536ffb9b906e4438c6e0&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true&amp;apikey=ca2ca830-f0d1-40ca-b73a-74cf2c4f7760"></script>
-            </div>
-        </div>
+
+                                            <form method="post" class="form-box js-lead-form" data-abide novalidate data-lead-type="price_request" data-success-text="Спасибо! Мы свяжемся с вами.">
+                                                <div class="input-box">
+                                                    <i class="icon-fio"></i>
+                                                    <input type="text" name="NAME" value="" class="input-box__input" required pattern="fio" autocomplete="off">
+                                                    <label class="input-box__text">ФИО</label>
+                                                </div>
+                                                <div class="input-box">
+                                                    <i class="icon-email"></i>
+                                                    <input type="text" name="EMAIL" value="" class="input-box__input" required pattern="email" autocomplete="off">
+                                                    <label class="input-box__text">E-mail</label>
+                                                </div>
+                                                <div class="input-box">
+                                                    <i class="icon-phone-border"></i>
+                                                    <input type="text" name="PHONE" value="" class="input-box__input is-phone" required autocomplete="off">
+                                                    <label class="input-box__text">Телефон</label>
+                                                </div>
+
+                                                <div class="form-box__agreement">
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" checked required>
+                                                        <div class="checkbox__text">
+                                                            Согласен с условиями
+                                                            <a href="javascript:;" data-open="dev_modal_policy">обработки
+                                                                персональных данных</a></div>
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-box__button">
+                                                    <button class="button"><i class="icon-hand"></i><span>Отправить</span></button>
+                                                </div>
+                                                <div class="form-box__message" data-role="form-message"></div>
+                                            </form>
 
 
-        <footer class="footer-box wow fadeInUp">
-            <div class="row expanded align-justify">
-                <div class="small-12 medium-12 large-flex-child-shrink column">
-                    <div class="footer-box__left">
-                        <a href="#header" class="logo-box">
-                            <img src="{% static 'img/bitrix/logo_1.png' %}" alt="" class="logo-img logo-img--white"> <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black"> </a>
-                        <div class="slogan-box">
-                            Линейная арматура для системы СИП оптом и в розницу в Казахстане. </div>
-                    </div>
-                </div>
-                <div class="small-12 medium-12 large-flex-child-shrink column">
-                    <div class="footer-box__right">
-                        <div class="footer-contact">
 
-                            <a href="https://wa.me/77029239300" class="footer-contact__whathApp" target="_blank">
-                                <i class="icon-whatsup"></i>
-                            </a>
 
-                            <div class="footer-contact__info">
-                                <div class="footer-contact__phone">
-                                    <!--<a href="tel:+77024286912">+7 702 428 69 12</a>-->
-                                    <!--                            <span> / </span>-->
-                                    <a href="tel:+77029239300">+7 702 923 93 00 </a> </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row expanded align-justify">
-                <div class="small-12 medium-flex-child-shrink large-flex-child-shrink column">
-                    <div class="copyright-box">
-                        <div class="copyright-box__text">&copy; ESPCompany</div>
-                        <div class="copyright-box__link"><a href="javascript:;" data-open="dev_modal_policy">Политика конфиденциальности</a>
+                    <div id="contact">
+                        <div class="row">
+                            <div class="column">
+                                <div class="title-box">
+                                    <span>Контактные</span> данные </div>
+                                <div class="row">
+                                    <div class="small-12 medium-6 large-3 column wow zoomInDown">
+                                        <div class="contact-box">
+                                            <div class="contact-box__icon">
+                                                <i class="icon-phone"></i>
+                                            </div>
+                                            <div class="contact-box__title">Телефоны</div>
+                                            <div class="contact-box__text">
+                                                <!--<a href="tel:+77024286912">+7 702 428 69 12</a>--> <br class="show-for-small-only">
+                                                <a href="tel:+77029239300">+7 702 923 93 00</a> </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-3 column wow zoomInDown" data-wow-delay=".5s">
+                                        <div class="contact-box">
+                                            <div class="contact-box__icon">
+                                                <i class="icon-mail"></i>
+                                            </div>
+                                            <div class="contact-box__title">Почта</div>
+                                            <div class="contact-box__text">
+                                                <a href="mailto:espcompany.a@gmail.com">espcompany.a@gmail.com</a> </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 medium-6 large-3 column wow zoomInDown" data-wow-delay="1s">
+                                        <div class="contact-box">
+                                            <div class="contact-box__icon">
+                                                <i class="icon-time"></i>
+                                            </div>
+                                            <div class="contact-box__title">Время работы</div>
+                                            <div class="contact-box__text">Пн – Пт: с 9:00 до 17:00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div id="map">
+                        <div class="map-container">
+                            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A8aa16208d19a177af4e47eaf333cc93e65622a6db1ba536ffb9b906e4438c6e0&amp;width=100%25&amp;height=360&amp;lang=ru_RU&amp;scroll=true&amp;apikey=ca2ca830-f0d1-40ca-b73a-74cf2c4f7760"></script>
+                        </div>
+                    </div>
+
+
+                    <footer class="footer-box wow fadeInUp">
+                        <div class="row expanded align-justify">
+                            <div class="small-12 medium-12 large-flex-child-shrink column">
+                                <div class="footer-box__left">
+                                    <a href="#header" class="logo-box">
+                                        <img src="{% static 'img/bitrix/logo_1.png' %}" alt="" class="logo-img logo-img--white"> <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black"> </a>
+                                    <div class="slogan-box">
+                                        Линейная арматура для системы СИП оптом и в розницу в Казахстане. </div>
+                                </div>
+                            </div>
+                            <div class="small-12 medium-12 large-flex-child-shrink column">
+                                <div class="footer-box__right">
+                                    <div class="footer-contact">
+
+                                        <a href="https://wa.me/77029239300" class="footer-contact__whathApp" target="_blank">
+                                            <i class="icon-whatsup"></i>
+                                        </a>
+
+                                        <div class="footer-contact__info">
+                                            <div class="footer-contact__phone">
+                                                <!--<a href="tel:+77024286912">+7 702 428 69 12</a>-->
+                                                <!--                            <span> / </span>-->
+                                                <a href="tel:+77029239300">+7 702 923 93 00 </a> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row expanded align-justify">
+                            <div class="small-12 medium-flex-child-shrink large-flex-child-shrink column">
+                                <div class="copyright-box">
+                                    <div class="copyright-box__text">&copy; ESPCompany</div>
+                                    <div class="copyright-box__link"><a href="javascript:;" data-open="dev_modal_policy">Политика конфиденциальности</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                    <a href="#header" class="up-button" data-smooth-scroll>
+                        <i class="icon-arrow-down"></i>
+                    </a>
                 </div>
             </div>
-        </footer>
-        <a href="#header" class="up-button" data-smooth-scroll>
-            <i class="icon-arrow-down"></i>
-        </a>
-    </div>
-    </div>
-    <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas>
-        <a href="javascript:;" class="canvas-box__close">
-            <i class="icon-close-2"></i>
-        </a>
-        <div class="canvas-box">
-            <div class="canvas-logo">
-                <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black"> </div>
-            <ul class="canvas-menu">
-
-                <li class="canvas-menu__item"><a href="#catalog" data-smooth-scroll>Каталог</a></li>
-                <li class="canvas-menu__item"><a href="#company" data-smooth-scroll>О компании</a></li>
-                <li class="canvas-menu__item"><a href="#howWorking" data-smooth-scroll>Как мы работаем</a></li>
-                <li class="canvas-menu__item"><a href="#faq" data-smooth-scroll>Часто-задаваемые вопросы</a></li>
-                <li class="canvas-menu__item"><a href="#contact" data-smooth-scroll>Контакты</a></li>
-            </ul>
-            <div class="canvas-contact">
-                <a href="https://wa.me/77029239300" class="canvas-contact__whathApp" target="_blank">
-                    <i class="icon-whatsup"></i>
+            <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas>
+                <a href="javascript:;" class="canvas-box__close">
+                    <i class="icon-close-2"></i>
                 </a>
-                <div class="canvas-contact__phone">
-                    <!--<a href="tel:+77024286912">+7 702 428 69 12</a>--> <a href="tel:+77029239300">+7 702 923 93 00</a> </div>
-                <div class="canvas-contact__links">
-                    <a href="javascript:;" data-open="dev_modal_callback">Перезвонить</a>
+                <div class="canvas-box">
+                    <div class="canvas-logo">
+                        <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black"> </div>
+                    <ul class="canvas-menu">
+
+                        <li class="canvas-menu__item"><a href="#catalog" data-smooth-scroll>Каталог</a></li>
+                        <li class="canvas-menu__item"><a href="#company" data-smooth-scroll>О компании</a></li>
+                        <li class="canvas-menu__item"><a href="#howWorking" data-smooth-scroll>Как мы работаем</a></li>
+                        <li class="canvas-menu__item"><a href="#faq" data-smooth-scroll>Часто-задаваемые вопросы</a></li>
+                        <li class="canvas-menu__item"><a href="#contact" data-smooth-scroll>Контакты</a></li>
+                    </ul>
+                    <div class="canvas-contact">
+                        <a href="https://wa.me/77029239300" class="canvas-contact__whathApp" target="_blank">
+                            <i class="icon-whatsup"></i>
+                        </a>
+                        <div class="canvas-contact__phone">
+                            <!--<a href="tel:+77024286912">+7 702 428 69 12</a>--> <a href="tel:+77029239300">+7 702 923 93 00</a> </div>
+                        <div class="canvas-contact__links">
+                            <a href="javascript:;" data-open="dev_modal_callback">Перезвонить</a>
+                        </div>
+                    </div>
+                    <div class="canvas-basket">
+                        <div class="canvas-basket__title">Корзина</div>
+                        <div class="canvas-basket__content">
+                            <i style="font-style: normal" class="dev_count_cart">0</i> товаров
+                            <span><i style="font-style: normal" class="dev_price_cart">0</i> тг</span>
+                        </div>
+                        <a href="javascript:;" class="canvas-basket__icon" data-open="dev_modal_cart">
+                            <i class="icon-basket"></i>
+                            <span class="canvas-basket__counter"><i style="font-style: normal" class="dev_count_cart">0</i></span>
+                        </a>
+                    </div>
+                    <a href="javascript:;" class="button" data-open="dev_modal_feedback"><i class="icon-hand"></i>
+                        <span>Оставить заявку</span></a>
                 </div>
             </div>
-            <div class="canvas-basket">
-                <div class="canvas-basket__title">Корзина</div>
-                <div class="canvas-basket__content">
-                    <i style="font-style: normal" class="dev_count_cart">0</i> товаров
-                    <span><i style="font-style: normal" class="dev_price_cart">0</i> тг</span>
-                </div>
-                <a href="javascript:;" class="canvas-basket__icon" data-open="dev_modal_cart">
-                    <i class="icon-basket"></i>
-                    <span class="canvas-basket__counter"><i style="font-style: normal" class="dev_count_cart">0</i></span>
+            <div class="off-canvas position-right" id="offCanvasRightMenu" data-off-canvas>
+                <a href="javascript:;" class="canvas-box__close">
+                    <i class="icon-close-2"></i>
                 </a>
-            </div>
-            <a href="javascript:;" class="button" data-open="dev_modal_feedback"><i class="icon-hand"></i>
-                <span>Оставить заявку</span></a>
-        </div>
-    </div>
-    <div class="off-canvas position-right" id="offCanvasRightMenu" data-off-canvas>
-        <a href="javascript:;" class="canvas-box__close">
-            <i class="icon-close-2"></i>
-        </a>
-        <div class="canvas-box">
-            <div class="canvas-logo">
-                <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black">
-            </div>
-            <div class="canvas-menu-catalog">
-                <ul class="ajax_menu_wrapper menu-catalog__items lvl-1">
-                    {% include 'catalog/_menu_recursive.html' with categories=root_categories level=1 %}
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="reveal" id="dev_modal_cart" data-reveal>
-        <div class="box-modal">
-            <button class="box-modal__close" data-close type="button">
-                <span>
-                    <i class="icon-close"></i>
-                </span>
-            </button>
-            <div id="dev_cart_ajax">
-                <div class="box-modal__title"><i class="icon-basket"></i>Корзина пуста</div>
-            </div>
-        </div>
-    </div>
-    <div class="reveal" id="dev_modal_product" data-reveal>
-        <div id="dev_modal_product_ajax"></div>
-    </div>
-    <div class="reveal" id="dev_modal_callback" data-reveal>
-        <div class="box-modal">
-            <button class="box-modal__close" data-close type="button">
-                <span>
-                    <i class="icon-close"></i>
-                </span>
-            </button>
-            <div class="box-modal__title">
-                <i class="icon-phone"></i>Заказать обратный звонок
-            </div>
-            <div class="box-modal__content">
-                <form id="callback_form" method="post" action="{% url 'catalog:lead-create' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="callback">
-                    <div class="form-group">
-                        <label for="callback_name">Ваше имя *</label>
-                        <input type="text" id="callback_name" name="name" required class="form-control" placeholder="Введите ваше имя">
+                <div class="canvas-box">
+                    <div class="canvas-logo">
+                        <img src="{% static 'img/bitrix/logo_2.png' %}" alt="" class="logo-img logo-img--black">
                     </div>
-                    <div class="form-group">
-                        <label for="callback_phone">Телефон *</label>
-                        <input type="tel" id="callback_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
+                    <div class="canvas-menu-catalog">
+                        <ul class="ajax_menu_wrapper menu-catalog__items lvl-1">
+                            {% include 'catalog/_menu_recursive.html' with categories=root_categories level=1 %}
+                        </ul>
                     </div>
-                    <div class="form-group">
-                        <label for="callback_message">Сообщение (необязательно)</label>
-                        <textarea id="callback_message" name="message" class="form-control" rows="3" placeholder="Ваше сообщение"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="button">
-                            <i class="icon-hand"></i><span>Заказать звонок</span>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="reveal" id="dev_modal_feedback" data-reveal>
-        <div class="box-modal">
-            <button class="box-modal__close" data-close type="button">
-                <span>
-                    <i class="icon-close"></i>
-                </span>
-            </button>
-            <div class="box-modal__title">
-                <i class="icon-hand"></i>Оставить заявку
+            <div class="reveal" id="dev_modal_cart" data-reveal>
+                <div class="box-modal">
+                    <button class="box-modal__close" data-close type="button">
+                        <span>
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+                    <div id="dev_cart_ajax">
+                        <div class="box-modal__title"><i class="icon-basket"></i>Корзина пуста</div>
+                    </div>
+                </div>
             </div>
-            <div class="box-modal__content">
-                <form id="feedback_form" method="post" action="{% url 'catalog:lead-create' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="feedback">
-                    <div class="form-group">
-                        <label for="feedback_name">Ваше имя *</label>
-                        <input type="text" id="feedback_name" name="name" required class="form-control" placeholder="Введите ваше имя">
+            <div class="reveal" id="dev_modal_product" data-reveal>
+                <div id="dev_modal_product_ajax"></div>
+            </div>
+            <div class="reveal" id="dev_modal_callback" data-reveal>
+                <div class="box-modal">
+                    <button class="box-modal__close" data-close type="button">
+                        <span>
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+                    <div class="box-modal__title">
+                        <i class="icon-phone"></i>Заказать обратный звонок
                     </div>
-                    <div class="form-group">
-                        <label for="feedback_phone">Телефон *</label>
-                        <input type="tel" id="feedback_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
-                    </div>
-                    <div class="form-group">
-                        <label for="feedback_message">Сообщение *</label>
-                        <textarea id="feedback_message" name="message" required class="form-control" rows="4" placeholder="Ваше сообщение"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="checkbox">
-                            <input type="checkbox" required>
-                            <div class="checkbox__text">
-                                Согласен с условиями
-                                <a href="javascript:;" data-open="dev_modal_policy">обработки персональных данных</a>
+                    <div class="box-modal__content">
+                        <form id="callback_form" method="post" action="{% url 'catalog:lead-create' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="callback">
+                            <div class="form-group">
+                                <label for="callback_name">Ваше имя *</label>
+                                <input type="text" id="callback_name" name="name" required class="form-control" placeholder="Введите ваше имя">
                             </div>
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="button">
-                            <i class="icon-hand"></i><span>Отправить заявку</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="reveal" id="dev_modal_consultation" data-reveal>
-        <div class="box-modal">
-            <button class="box-modal__close" data-close type="button">
-                <span>
-                    <i class="icon-close"></i>
-                </span>
-            </button>
-            <div class="box-modal__title">
-                <i class="icon-hand"></i>Проконсультироваться
-            </div>
-            <div class="box-modal__content">
-                <form id="consultation_form" method="post" action="{% url 'catalog:lead-create' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="consultation">
-                    <div class="form-group">
-                        <label for="consultation_name">Ваше имя *</label>
-                        <input type="text" id="consultation_name" name="name" required class="form-control" placeholder="Введите ваше имя">
-                    </div>
-                    <div class="form-group">
-                        <label for="consultation_phone">Телефон *</label>
-                        <input type="tel" id="consultation_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
-                    </div>
-                    <div class="form-group">
-                        <label for="consultation_message">Ваш вопрос (необязательно)</label>
-                        <textarea id="consultation_message" name="message" class="form-control" rows="4" placeholder="Опишите ваш вопрос"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="checkbox">
-                            <input type="checkbox" required>
-                            <div class="checkbox__text">
-                                Согласен с условиями
-                                <a href="javascript:;" data-open="dev_modal_policy">обработки персональных данных</a>
+                            <div class="form-group">
+                                <label for="callback_phone">Телефон *</label>
+                                <input type="tel" id="callback_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
                             </div>
-                        </label>
+                            <div class="form-group">
+                                <label for="callback_message">Сообщение (необязательно)</label>
+                                <textarea id="callback_message" name="message" class="form-control" rows="3" placeholder="Ваше сообщение"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="button">
+                                    <i class="icon-hand"></i><span>Заказать звонок</span>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="button">
-                            <i class="icon-hand"></i><span>Получить консультацию</span>
-                        </button>
+                </div>
+            </div>
+            <div class="reveal" id="dev_modal_feedback" data-reveal>
+                <div class="box-modal">
+                    <button class="box-modal__close" data-close type="button">
+                        <span>
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+                    <div class="box-modal__title">
+                        <i class="icon-hand"></i>Оставить заявку
                     </div>
-                </form>
+                    <div class="box-modal__content">
+                        <form id="feedback_form" method="post" action="{% url 'catalog:lead-create' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="feedback">
+                            <div class="form-group">
+                                <label for="feedback_name">Ваше имя *</label>
+                                <input type="text" id="feedback_name" name="name" required class="form-control" placeholder="Введите ваше имя">
+                            </div>
+                            <div class="form-group">
+                                <label for="feedback_phone">Телефон *</label>
+                                <input type="tel" id="feedback_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
+                            </div>
+                            <div class="form-group">
+                                <label for="feedback_message">Сообщение *</label>
+                                <textarea id="feedback_message" name="message" required class="form-control" rows="4" placeholder="Ваше сообщение"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" required>
+                                    <div class="checkbox__text">
+                                        Согласен с условиями
+                                        <a href="javascript:;" data-open="dev_modal_policy">обработки персональных данных</a>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="button">
+                                    <i class="icon-hand"></i><span>Отправить заявку</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="reveal reveal--large" id="dev_modal_policy" data-reveal>
-        <div class="box-modal">
-            <button class="box-modal__close" data-close type="button">
-                <span>
-                    <i class="icon-close"></i>
-                </span>
-            </button>
-            <div class="box-modal__title">
-                Политика конфиденциальности
+            <div class="reveal" id="dev_modal_consultation" data-reveal>
+                <div class="box-modal">
+                    <button class="box-modal__close" data-close type="button">
+                        <span>
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+                    <div class="box-modal__title">
+                        <i class="icon-hand"></i>Проконсультироваться
+                    </div>
+                    <div class="box-modal__content">
+                        <form id="consultation_form" method="post" action="{% url 'catalog:lead-create' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="consultation">
+                            <div class="form-group">
+                                <label for="consultation_name">Ваше имя *</label>
+                                <input type="text" id="consultation_name" name="name" required class="form-control" placeholder="Введите ваше имя">
+                            </div>
+                            <div class="form-group">
+                                <label for="consultation_phone">Телефон *</label>
+                                <input type="tel" id="consultation_phone" name="phone" required class="form-control" placeholder="+7 (___) ___-__-__">
+                            </div>
+                            <div class="form-group">
+                                <label for="consultation_message">Ваш вопрос (необязательно)</label>
+                                <textarea id="consultation_message" name="message" class="form-control" rows="4" placeholder="Опишите ваш вопрос"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" required>
+                                    <div class="checkbox__text">
+                                        Согласен с условиями
+                                        <a href="javascript:;" data-open="dev_modal_policy">обработки персональных данных</a>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="button">
+                                    <i class="icon-hand"></i><span>Получить консультацию</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="box-modal__content" style="max-height: 70vh; overflow-y: auto; padding: 20px;">
-                <div style="line-height: 1.6; color: #333;">
-                    <p>Данная Политика конфиденциальности применима к данному Сайту. После просмотра данного Сайта обязательно прочитайте текст, содержащий политику конфиденциальности используемого сайта. В случае несогласия с данной Политикой конфиденциальности прекратите использование данного Сайта. Заполнив любую из форм и используя данный Сайт, Вы тем самым выражаете согласие с условиями изложенной ниже Политики конфиденциальности. Сайт охраняет конфиденциальность посетителей сайта.</p>
+            <div class="reveal reveal--large" id="dev_modal_policy" data-reveal>
+                <div class="box-modal">
+                    <button class="box-modal__close" data-close type="button">
+                        <span>
+                            <i class="icon-close"></i>
+                        </span>
+                    </button>
+                    <div class="box-modal__title">
+                        Политика конфиденциальности
+                    </div>
+                    <div class="box-modal__content" style="max-height: 70vh; overflow-y: auto; padding: 20px;">
+                        <div style="line-height: 1.6; color: #333;">
+                            <p>Данная Политика конфиденциальности применима к данному Сайту. После просмотра данного Сайта обязательно прочитайте текст, содержащий политику конфиденциальности используемого сайта. В случае несогласия с данной Политикой конфиденциальности прекратите использование данного Сайта. Заполнив любую из форм и используя данный Сайт, Вы тем самым выражаете согласие с условиями изложенной ниже Политики конфиденциальности. Сайт охраняет конфиденциальность посетителей сайта.</p>
 
-                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Персональная информация</h3>
-                    <p>Для того чтобы оказывать вам услуги, отвечать на вопросы, выполнять ваши пожелания и требования требуется такая информация, как ваше имя и номер телефона. САЙТ может использовать указанную информацию для ответов на запросы, а также для связи с Вами по телефону с целью предоставления информации о предлагаемых САЙТ услугах и рекламных кампаниях. При поступлении от вас обращения в виде отправки любой заполненной на сайте формы САЙТ может потребоваться связаться с Вами для получения дополнительной информации, необходимой для вашего обслуживания и ответа на интересующие вопросы. САЙТ обязуется не передавать данную информацию третьим лицам без Вашего разрешения, за исключением информации, необходимой для выполнения вашего обслуживания. Со своей стороны, Вы предоставляете САЙТ право использовать любую сообщённую Вами информацию для выполнения указанных выше действий.</p>
+                            <h3 style="margin-top: 20px; margin-bottom: 10px;">Персональная информация</h3>
+                            <p>Для того чтобы оказывать вам услуги, отвечать на вопросы, выполнять ваши пожелания и требования требуется такая информация, как ваше имя и номер телефона. САЙТ может использовать указанную информацию для ответов на запросы, а также для связи с Вами по телефону с целью предоставления информации о предлагаемых САЙТ услугах и рекламных кампаниях. При поступлении от вас обращения в виде отправки любой заполненной на сайте формы САЙТ может потребоваться связаться с Вами для получения дополнительной информации, необходимой для вашего обслуживания и ответа на интересующие вопросы. САЙТ обязуется не передавать данную информацию третьим лицам без Вашего разрешения, за исключением информации, необходимой для выполнения вашего обслуживания. Со своей стороны, Вы предоставляете САЙТ право использовать любую сообщённую Вами информацию для выполнения указанных выше действий.</p>
 
-                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Безопасность</h3>
-                    <p>Передача персональных данных в любой форме (лично, по телефону или через Интернет) всегда связана с определенным риском, поскольку не существует абсолютно надежных (защищенных от злонамеренных посягательств) систем, однако САЙТ принимает необходимые адекватные меры для минимизации риска и предотвращения несанкционированного доступа, несанкционированного использования и искажения Ваших персональных данных.</p>
+                            <h3 style="margin-top: 20px; margin-bottom: 10px;">Безопасность</h3>
+                            <p>Передача персональных данных в любой форме (лично, по телефону или через Интернет) всегда связана с определенным риском, поскольку не существует абсолютно надежных (защищенных от злонамеренных посягательств) систем, однако САЙТ принимает необходимые адекватные меры для минимизации риска и предотвращения несанкционированного доступа, несанкционированного использования и искажения Ваших персональных данных.</p>
 
-                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Несовершеннолетние</h3>
-                    <p>САЙТ не принимает никакой информации от лиц моложе 18 лет без согласия их родителей или законных опекунов. Кроме того, лица моложе 18 лет не могут совершать каких-либо покупок или иных юридических действий на данном Сайте без согласия родителей или законных опекунов, если это не допускается законодательством Российской Федерации.</p>
+                            <h3 style="margin-top: 20px; margin-bottom: 10px;">Несовершеннолетние</h3>
+                            <p>САЙТ не принимает никакой информации от лиц моложе 18 лет без согласия их родителей или законных опекунов. Кроме того, лица моложе 18 лет не могут совершать каких-либо покупок или иных юридических действий на данном Сайте без согласия родителей или законных опекунов, если иное не допускается законодательством Республики Казахстан.</p>
 
-                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Модификация</h3>
-                    <p>САЙТ имеет право изменять данную Политику конфиденциальности, изменять и корректировать условия доступа или запрещать доступ к сайту, а также изменять его содержание в любое время без предварительного уведомления.</p>
+                            <h3 style="margin-top: 20px; margin-bottom: 10px;">Модификация</h3>
+                            <p>САЙТ имеет право изменять данную Политику конфиденциальности, изменять и корректировать условия доступа или запрещать доступ к сайту, а также изменять его содержание в любое время без предварительного уведомления.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/what-input@5.2.12/dist/what-input.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.8.1/dist/js/foundation.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.3/dist/wow.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/what-input@5.2.12/dist/what-input.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.8.1/dist/js/foundation.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.3/dist/wow.min.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
 </body>
 
 </html>

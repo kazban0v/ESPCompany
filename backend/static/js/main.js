@@ -1650,10 +1650,20 @@
         function restorePageState() {
             // Foundation Sites сам управляет состоянием, но мы помогаем восстановить прокрутку
             setTimeout(function() {
-                // Убираем класс, если Foundation его не убрал
-                $('body').removeClass('is-reveal-open');
+                // Убираем служебные классы, если Foundation их не убрал
+                $('body').removeClass('is-reveal-open section-products-open');
+                $('html').removeClass('is-reveal-open');
 
-                // Восстанавливаем прокрутку только если она была заблокирована
+                // Прячем overlay, если он вдруг остался висеть
+                $('.reveal-overlay').removeClass('is-open').hide();
+
+                // Принудительно скрываем модальные окна, которые могли зависнуть в состоянии is-open
+                $('.reveal.is-open').each(function() {
+                    var $modal = $(this);
+                    $modal.removeClass('is-open').hide();
+                });
+
+                // Восстанавливаем прокрутку, если она была заблокирована
                 if ($('body').css('overflow') === 'hidden') {
                     $('body').css('overflow', '');
                 }
@@ -1741,6 +1751,15 @@
                 $('.reveal-overlay').removeClass('is-open').hide();
 
                 // Восстанавливаем состояние страницы
+                restorePageState();
+            }
+        });
+
+        // Глобальная "страховка" от зависшего состояния после модалок:
+        // если нет открытых модальных окон, но страница всё ещё заблокирована,
+        // при любом клике выполняем восстановление.
+        $(document).on('click.globalRestore touchend.globalRestore', function() {
+            if (!$('.reveal.is-open').length) {
                 restorePageState();
             }
         });

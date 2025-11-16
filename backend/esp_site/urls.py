@@ -30,8 +30,20 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # В production медиа-файлы не сохраняются на Railway
+    # Используем static/img/products для изображений товаров
+    # WhiteNoise обслуживает их автоматически через /static/
+    pass
 
 # Добавляем маршрут для favicon.ico
+# Используем существующий логотип как фавикон, чтобы он работал и локально, и на продакшене
 urlpatterns += [
-    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'img/favicon.ico', permanent=True)),
+    path(
+        'favicon.ico',
+        RedirectView.as_view(
+            url=settings.STATIC_URL + 'img/bitrix/logo_1.png',
+            permanent=True,
+        ),
+    ),
 ]

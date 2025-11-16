@@ -783,3 +783,8 @@ body.section-products-open .catalog-box .subcategory-sections {
     margin-top: 0 !important;
     padding-top: 20px !important;
 }
+
+/* Убираем иконку DOC (фон price_download.svg) в блоке "selectionCatalog" */
+#formSelection::before {
+    display: none !important;
+}

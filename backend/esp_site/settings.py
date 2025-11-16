@@ -161,6 +161,10 @@ else:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# На Railway медиа-файлы не сохраняются между перезапусками
+# Используем static/img/products для изображений товаров
+# WhiteNoise будет обслуживать их автоматически
+
 # Настройки безопасности для production
 if not DEBUG:
     # Railway обрабатывает HTTPS через прокси, поэтому отключаем принудительное перенаправление
