@@ -6282,7 +6282,7 @@ a {
     position: absolute;
     top: -170px;
     left: 70%;
-    background: url(../../../../../templates/ck-mitra/img/price-book.png) no-repeat 50%;
+    background: url(../../img/bitrix/price_download.svg) no-repeat 50%;
     width: 411px;
     height: 444px;
     content: '';
@@ -10505,7 +10505,7 @@ input::-webkit-inner-spin-button {
     top: 50%;
     margin-left: -40px;
     margin-top: -40px;
-    background: url(../../../../../templates/ck-mitra/img/owl.video.play.png) no-repeat;
+    background: url(../../img/bitrix/owl.video.play.png) no-repeat;
     cursor: pointer;
     z-index: 1;
     -webkit-backface-visibility: hidden;
@@ -10613,7 +10613,7 @@ input::-webkit-inner-spin-button {
 
 #ajax-loader::before {
     content: '';
-    background: url('../../../../../templates/ck-mitra/img/loading.svg') center/100px no-repeat;
+    background: url('../../img/bitrix/loading.svg') center/100px no-repeat;
     position: absolute;
     top: 0;
     left: 0;
