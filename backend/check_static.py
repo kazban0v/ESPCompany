@@ -33,7 +33,18 @@ print(f"staticfiles_dir exists: {staticfiles_dir.exists()}")
 # Всегда выполняем collectstatic для надежности
 print("\nВыполняем collectstatic...")
 try:
-    result = call_command('collectstatic', '--noinput', verbosity=2)
+    # Сначала очищаем старые файлы
+    if staticfiles_dir.exists():
+        import shutil
+        shutil.rmtree(staticfiles_dir)
+        print("✓ Старая директория staticfiles удалена")
+    
+    # Создаем новую директорию
+    staticfiles_dir.mkdir(exist_ok=True)
+    print("✓ Директория staticfiles создана")
+    
+    # Выполняем collectstatic
+    result = call_command('collectstatic', '--noinput', '--clear', verbosity=2)
     print("✓ collectstatic выполнен успешно")
 except Exception as e:
     print(f"✗ Ошибка при collectstatic: {e}")

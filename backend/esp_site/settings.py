@@ -153,8 +153,10 @@ STATICFILES_DIRS = [
 # В DEBUG режиме используем стандартный storage для разработки
 if DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-# В production WhiteNoise обслуживает файлы автоматически через middleware
-# Убеждаемся, что WhiteNoise правильно настроен для обслуживания файлов
+else:
+    # В production используем WhiteNoise для обслуживания статических файлов
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+    # WhiteNoise будет обслуживать файлы из STATIC_ROOT автоматически через middleware
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

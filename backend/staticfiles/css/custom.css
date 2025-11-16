@@ -1,0 +1,765 @@
+﻿.form-box__message {
+    display: none;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.form-box__message.is-success {
+    color: #2ecc71;
+}
+
+.form-box__message.is-error {
+    color: #e74c3c;
+}
+
+/* Стили для модального окна политики конфиденциальности */
+.reveal--large {
+    max-width: 800px;
+}
+
+.reveal--large .box-modal__content {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.reveal--large .box-modal__content h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.reveal--large .box-modal__content p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+/* Показываем меню каталога на всех устройствах при необходимости */
+.show-for-all {
+    display: block !important;
+}
+
+@media screen and (max-width: 63.9375em) {
+    .show-for-all .menu-catalog {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        background: #fff;
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .show-for-all .menu-catalog+* {
+        margin-left: 300px;
+    }
+}
+
+/* Исправление проблемы с белым пространством при открытых модальных окнах */
+body.is-reveal-open {
+    overflow: hidden !important;
+    position: relative;
+}
+
+/* Foundation Sites сам управляет состоянием, но мы помогаем */
+body.is-reveal-open,
+html.is-reveal-open {
+    overflow: hidden !important;
+}
+
+.reveal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 999;
+    display: none;
+}
+
+.reveal-overlay.is-open {
+    display: block;
+}
+
+.reveal {
+    z-index: 1000;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.reveal.is-open {
+    display: block;
+}
+
+/* Предотвращаем белый экран после закрытия модального окна */
+body:not(.is-reveal-open) {
+    overflow: auto !important;
+}
+
+/* Структура категорий на мобильных устройствах - работает так же, как на десктопе */
+@media screen and (max-width: 63.9375em) {
+
+    .catalog-section,
+    .catalog-subsection,
+    .catalog-section-item {
+        display: block !important;
+    }
+
+    .category-subcategories,
+    .subcategory-sections,
+    .section-products {
+        display: none;
+    }
+
+    .category-subcategories[style*="display: block"],
+    .category-subcategories[style*="display:flex"],
+    .subcategory-sections[style*="display: block"],
+    .subcategory-sections[style*="display:flex"],
+    .section-products[style*="display: block"],
+    .section-products[style*="display:flex"],
+    .section-products[style*="visibility: visible"] {
+        display: block !important;
+    }
+
+    .category-toggle,
+    .subcategory-toggle,
+    .section-toggle {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .category-toggle__title {
+        display: inline-block;
+    }
+
+    /* При открытом разделе скрываем заголовки категорий/подкатегорий/разделов */
+    .section-toggle.is-open~* .catalog-section__header,
+    .section-toggle.is-open~* .catalog-subsection__title,
+    .section-toggle.is-open~* .catalog-section-item__title {
+        display: none !important;
+    }
+
+    /* Показываем контейнер товаров на всю ширину */
+    #products-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 15px !important;
+    }
+
+    /* Скрываем заголовки при открытом разделе */
+    body.section-products-open .catalog-section__header,
+    body.section-products-open .catalog-subsection__title,
+    body.section-products-open .catalog-section-item__title,
+    body.section-products-open .category-subcategories,
+    body.section-products-open .subcategory-sections {
+        display: none !important;
+    }
+}
+
+/* Скрываем заголовки при открытом разделе на всех устройствах */
+body.section-products-open .catalog-section,
+body.section-products-open .catalog-section__header,
+body.section-products-open .catalog-subsection,
+body.section-products-open .catalog-subsection__title,
+body.section-products-open .catalog-section-item,
+body.section-products-open .catalog-section-item__title,
+body.section-products-open .category-subcategories,
+body.section-products-open .subcategory-sections,
+body.section-products-open #catalog .catalog-section,
+body.section-products-open #catalog .catalog-section__header,
+body.section-products-open #catalog .catalog-subsection,
+body.section-products-open #catalog .catalog-subsection__title,
+body.section-products-open #catalog .catalog-section-item,
+body.section-products-open #catalog .catalog-section-item__title,
+body.section-products-open #catalog .category-subcategories,
+body.section-products-open #catalog .subcategory-sections,
+body.section-products-open .catalog-box .catalog-section,
+body.section-products-open .catalog-box .catalog-section__header,
+body.section-products-open .catalog-box .catalog-subsection,
+body.section-products-open .catalog-box .catalog-subsection__title,
+body.section-products-open .catalog-box .catalog-section-item,
+body.section-products-open .catalog-box .catalog-section-item__title,
+body.section-products-open .catalog-box .category-subcategories,
+body.section-products-open .catalog-box .subcategory-sections {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Кнопка для открытия мобильного меню каталога */
+.catalog-device-button {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.catalog-device-button button {
+    width: 100%;
+    padding: 15px 20px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.catalog-device-button button:hover {
+    background: #e8e8e8;
+}
+
+.catalog-device-button button i {
+    font-size: 18px;
+}
+
+.catalog-device-button button .icon-arrow-down {
+    margin-left: auto;
+}
+
+.menu-catalog__items .has-dropdown>a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 2.5rem;
+}
+
+.menu-catalog__items .has-dropdown>a i.icon-check-2 {
+    margin-right: 10px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.menu-catalog__items .has-dropdown>a::after {
+    content: '\25B6';
+    /* Стрелка вправо (свернуто) */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    line-height: 1.5;
+    color: #08181e;
+    transition: transform 0.2s ease;
+}
+
+.menu-catalog__items .has-dropdown.is-open>a::after {
+    content: '\25BC';
+    /* Стрелка вниз (развернуто) */
+    transform: translateY(-50%);
+}
+
+.menu-catalog__items>li>a.active::after,
+.menu-catalog__items>li>a:hover::after {
+    color: #fff;
+}
+
+.cart-items {
+    margin: 1rem 0;
+}
+
+.cart-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item__info {
+    flex: 1 1 auto;
+}
+
+.cart-item__title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.cart-item__sku {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.cart-item__qty,
+.cart-item__price {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.cart-item__remove {
+    white-space: nowrap;
+    color: #e74c3c;
+    font-size: 0.85rem;
+}
+
+.cart-summary {
+    padding: 1rem 0;
+    border-top: 1px solid #ececec;
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 1rem;
+}
+
+.cart-summary__row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.cart-summary__row:last-child {
+    margin-bottom: 0;
+}
+
+.cart-summary__row--total {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.button-plain {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.button-plain:hover {
+    text-decoration: underline;
+}
+
+.cart-order-form__title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.cart-order-form__comment {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.is-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.cart-empty-text {
+    margin: 1rem 0;
+    color: #666;
+}
+
+/* Стили для переключения категорий */
+.category-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.category-toggle:hover {
+    color: #007bff;
+}
+
+.category-toggle__icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 0.8em;
+    color: #007bff;
+}
+
+.category-toggle.is-open .category-toggle__icon {
+    transform: rotate(90deg);
+}
+
+.category-toggle__title {
+    font-weight: 600;
+}
+
+.category-toggle__count {
+    font-size: 0.9em;
+    color: #666;
+    font-weight: normal;
+}
+
+.category-products {
+    margin-top: 1.5rem;
+    display: none;
+    /* Скрываем товары по умолчанию */
+    animation: fadeIn 0.3s ease;
+}
+
+.category-products.is-visible {
+    display: block;
+    /* Показываем товары, когда они открыты */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для каталога как на оригинальном сайте */
+.catalog-box {
+    padding: 20px 0;
+}
+
+.catalog-cards {
+    margin: 0 -10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.catalog-cards .column {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-box {
+    background: #fff;
+    border: 2px solid #e9edf5;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 18px;
+    min-height: calc(100% - 30px);
+    position: relative;
+}
+
+.product-box:hover {
+    box-shadow: 0 10px 30px rgba(8, 24, 30, 0.15);
+    transform: translateY(-2px);
+}
+
+.product-box__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+}
+
+.product-box__photo-wrap {
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 200px;
+    max-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-box__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.product-box__photo img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    background: #fff;
+}
+
+.product-box__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.product-box__title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: #08181e;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.product-box__meta {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+    min-height: 0;
+}
+
+/* Обеспечиваем одинаковое расстояние до кнопки, даже если блок цен скрыт */
+.product-box__content>.product-box__meta:last-of-type {
+    margin-bottom: 15px;
+}
+
+.product-box__meta div {
+    margin-bottom: 5px;
+}
+
+.product-box__sku {
+    font-weight: 600;
+    color: #08181e;
+}
+
+.product-box__prices {
+    margin-bottom: 15px;
+    flex-shrink: 0;
+    min-height: 0;
+}
+
+.product-box__price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.product-box__price:last-child {
+    margin-bottom: 0;
+}
+
+.product-box__price-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.product-box__price-value {
+    font-weight: 700;
+    font-size: 16px;
+    color: #08181e;
+}
+
+.product-box__price--secondary .product-box__price-value {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.product-box__controls {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-top: auto;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.product-box__qty {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+    min-height: 44px;
+}
+
+.button-qty {
+    background: #f5f5f5;
+    border: none;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-qty:hover {
+    background: #e0e0e0;
+}
+
+.product-count {
+    border: none;
+    width: 50px;
+    text-align: center;
+    padding: 10px 5px;
+    font-size: 14px;
+    min-width: 50px;
+}
+
+.product-box__button {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: stretch;
+}
+
+.button-ordinary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #08181e;
+    background: #08181e;
+    color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+.button-ordinary:hover {
+    background: #0a1f26;
+    border-color: #0a1f26;
+    color: #fff;
+}
+
+/* Меню каталога */
+.menu-catalog__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-catalog__items li {
+    margin: 0;
+}
+
+.menu-catalog__items>li>a {
+    display: block;
+    padding: 10px 15px;
+    color: #08181e;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.menu-catalog__items>li>a:hover,
+.menu-catalog__items>li>a.active {
+    background: #08181e;
+    color: #fff;
+    border-left-color: #fff;
+}
+
+.menu-catalog__items .has-dropdown>a {
+    position: relative;
+}
+
+.menu-catalog__items .has-dropdown.is-open>a {
+    background: #f5f5f5;
+    color: #08181e;
+}
+
+.menu-catalog__items .lvl-2 {
+    background: #f5f5f5;
+    padding-left: 0;
+}
+
+.menu-catalog__items .lvl-2>li>a {
+    padding-left: 30px;
+    font-size: 14px;
+}
+
+.menu-catalog__items .lvl-3 {
+    background: #e8e8e8;
+    padding-left: 0;
+}
+
+.menu-catalog__items .lvl-3>li>a {
+    padding-left: 45px;
+    font-size: 13px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .catalog-cards {
+        margin: 0 -5px;
+    }
+
+    .catalog-cards .column {
+        padding: 5px;
+    }
+
+    .product-box {
+        padding: 15px 10px;
+    }
+
+    .product-box__photo-wrap {
+        min-height: 150px;
+        max-height: 200px;
+        margin-bottom: 15px;
+    }
+
+    .product-box__title {
+        font-size: 13px;
+        min-height: auto;
+    }
+
+    .product-box__controls {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .product-box__qty {
+        width: 100%;
+        margin-bottom: 0;
+        justify-content: center;
+    }
+
+    .product-box__button {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .button-ordinary {
+        width: 100%;
+        min-height: 44px;
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .button-qty {
+        min-width: 44px;
+        padding: 12px;
+    }
+
+    .product-count {
+        min-width: 44px;
+        padding: 12px 5px;
+    }
+}
