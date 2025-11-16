@@ -92,30 +92,41 @@ class FrontendIndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Создаем queryset для активных товаров
-        active_products = Product.objects.filter(is_active=True).order_by('order', 'title')
-        
-        # Загружаем все активные категории с вложенными уровнями и товарами
-        all_categories = Category.objects.filter(is_active=True).prefetch_related(
-            Prefetch(
-                'subcategories',
-                queryset=Subcategory.objects.filter(is_active=True).order_by('order', 'title').prefetch_related(
-                    Prefetch(
-                        'sections',
-                        queryset=Section.objects.filter(is_active=True).order_by('order', 'title').prefetch_related(
-                            Prefetch('products', queryset=active_products)
+        try:
+            # Создаем queryset для активных товаров
+            active_products = Product.objects.filter(is_active=True).order_by('order', 'title')
+            
+            # Загружаем все активные категории с вложенными уровнями и товарами
+            all_categories = Category.objects.filter(is_active=True).prefetch_related(
+                Prefetch(
+                    'subcategories',
+                    queryset=Subcategory.objects.filter(is_active=True).order_by('order', 'title').prefetch_related(
+                        Prefetch(
+                            'sections',
+                            queryset=Section.objects.filter(is_active=True).order_by('order', 'title').prefetch_related(
+                                Prefetch('products', queryset=active_products)
+                            )
                         )
                     )
                 )
-            )
-        ).order_by('order', 'title')
+            ).order_by('order', 'title')
+            
+            # Собираем все товары для отображения на странице
+            all_products = list(active_products.select_related('section__subcategory__category'))
+            
+            context['categories'] = all_categories
+            context['root_categories'] = all_categories  # Для совместимости со старыми шаблонами
+            context['all_products'] = all_products
+        except Exception as e:
+            # Если ошибка с базой данных, возвращаем пустые списки
+            context['categories'] = []
+            context['root_categories'] = []
+            context['all_products'] = []
+            # Логируем ошибку для отладки
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error loading catalog data: {e}")
         
-        # Собираем все товары для отображения на странице
-        all_products = list(active_products.select_related('section__subcategory__category'))
-        
-        context['categories'] = all_categories
-        context['root_categories'] = all_categories  # Для совместимости со старыми шаблонами
-        context['all_products'] = all_products
         return context
 
 
