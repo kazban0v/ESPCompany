@@ -7,6 +7,10 @@ import os
 import sys
 from pathlib import Path
 
+print("=" * 50)
+print("RESET_DB.PY: Начало работы")
+print("=" * 50)
+
 # Добавляем путь к проекту
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
@@ -21,6 +25,8 @@ from django.core.management import call_command
 
 # Проверяем наличие базы данных
 db_path = BASE_DIR / 'db.sqlite3'
+print(f"База данных: {db_path}")
+print(f"База данных существует: {db_path.exists()}")
 
 # Проверяем, существует ли база данных
 if db_path.exists():
