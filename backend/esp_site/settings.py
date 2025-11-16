@@ -149,9 +149,10 @@ STATICFILES_DIRS = [
 ]
 
 # WhiteNoise для статических файлов на Railway
-# Используем CompressedStaticFilesStorage вместо CompressedManifestStaticFilesStorage
-# чтобы избежать проблем с отсутствующим manifest.json
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# WhiteNoise автоматически обслуживает файлы из STATIC_ROOT в production
+# В production не используем STATICFILES_STORAGE - WhiteNoise работает напрямую
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
