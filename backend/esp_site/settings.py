@@ -70,11 +70,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Настройки WhiteNoise для статических файлов
-WHITENOISE_USE_FINDERS = False  # Используем только STATIC_ROOT, не ищем файлы динамически
-WHITENOISE_ROOT = STATIC_ROOT  # Явно указываем корневую директорию
-WHITENOISE_AUTOREFRESH = False  # Не обновлять файлы автоматически в production
-
 ROOT_URLCONF = 'esp_site.urls'
 
 TEMPLATES = [
@@ -158,6 +153,11 @@ STATICFILES_DIRS = [
 # В production не используем STATICFILES_STORAGE - WhiteNoise работает напрямую
 if DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    # Настройки WhiteNoise для статических файлов (после определения STATIC_ROOT)
+    WHITENOISE_USE_FINDERS = False  # Используем только STATIC_ROOT, не ищем файлы динамически
+    WHITENOISE_ROOT = STATIC_ROOT  # Явно указываем корневую директорию
+    WHITENOISE_AUTOREFRESH = False  # Не обновлять файлы автоматически в production
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
