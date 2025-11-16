@@ -27,8 +27,14 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static('bitrix/', document_root=settings.BASE_DIR.parent / 'bitrix')
-    urlpatterns += static('upload/', document_root=settings.BASE_DIR.parent / 'upload')
+    # Добавляем маршруты для bitrix и upload только если директории существуют
+    from pathlib import Path
+    bitrix_path = settings.BASE_DIR.parent / 'bitrix'
+    upload_path = settings.BASE_DIR.parent / 'upload'
+    if bitrix_path.exists():
+        urlpatterns += static('bitrix/', document_root=bitrix_path)
+    if upload_path.exists():
+        urlpatterns += static('upload/', document_root=upload_path)
     # Добавляем маршрут для favicon.ico
     from django.views.generic import RedirectView
     urlpatterns += [
