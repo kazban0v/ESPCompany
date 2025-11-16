@@ -61,7 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для статических файлов на Railway
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для статических файлов на Railway (должен быть сразу после SecurityMiddleware)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -69,6 +69,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Настройки WhiteNoise для статических файлов
+WHITENOISE_USE_FINDERS = False  # Используем только STATIC_ROOT, не ищем файлы динамически
+WHITENOISE_ROOT = STATIC_ROOT  # Явно указываем корневую директорию
+WHITENOISE_AUTOREFRESH = False  # Не обновлять файлы автоматически в production
 
 ROOT_URLCONF = 'esp_site.urls'
 
