@@ -1,0 +1,77 @@
+# Django settings for Timeweb
+
+# Настройка для Passenger (если используется)
+<IfModule mod_passenger.c>
+   PassengerBaseURI /
+   PassengerAppRoot /home/c/cn956883/ESPCompany/public_html
+   PassengerAppType wsgi
+   PassengerStartupFile passenger_wsgi.py
+</IfModule>
+
+# Разрешаем доступ к статическим и медиа файлам напрямую
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Статические файлы - отдаем напрямую (не передаем в Django)
+RewriteCond %{REQUEST_URI} ^/static/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/media/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/bitrix/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/upload/
+RewriteRule ^(.*)$ - [L]
+
+# Все остальное - на Django/Passenger
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ passenger_wsgi.py/$1 [QSA,L]
+</IfModule>
+
+# Защита Python файлов
+<FilesMatch "\.(py|pyc|pyo)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Исключение для wsgi файлов
+<Files "esp_site/wsgi.py">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</Files>
+
+<Files "passenger_wsgi.py">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</Files>
+
+# Защита конфиденциальных файлов
+<FilesMatch "^(manage\.py|db\.sqlite3|settings\.py|\.env)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+

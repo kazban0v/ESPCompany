@@ -1,0 +1,151 @@
+{% load humanize %}
+{% comment %}
+Шаблон для отображения категорий с 3 уровнями (без товарных групп):
+Category -> Subcategory -> Section -> Products
+При клике на Section показываются все товары из всех товарных групп этого раздела
+{% endcomment %}
+
+{% for category in categories %}
+{% if category.is_active %}
+<section class="catalog-section" id="category-{{ category.id }}">
+    <div class="catalog-section__header">
+        <h2 class="catalog-box__title">
+            <a href="javascript:;" class="category-toggle" data-category-id="{{ category.id }}">
+                <span class="category-toggle__title">{{ category.title }}</span>
+            </a>
+        </h2>
+        {% if category.description %}
+        <div class="catalog-description">
+            <div class="catalog-description__title">Описание</div>
+            <div class="catalog-description__content">
+                {{ category.description|linebreaksbr }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% comment %} Подкатегории скрыты по умолчанию, показываются при клике на категорию {% endcomment %}
+    <div class="category-subcategories" data-category-id="{{ category.id }}" style="display: none;">
+        {% for subcategory in category.subcategories.all %}
+        {% if subcategory.is_active %}
+        <div class="catalog-subsection" id="subcategory-{{ subcategory.id }}">
+            <h3 class="catalog-subsection__title">
+                <a href="javascript:;" class="subcategory-toggle" data-subcategory-id="{{ subcategory.id }}">
+                    <span class="category-toggle__title">{{ subcategory.title }}</span>
+                </a>
+            </h3>
+            {% if subcategory.description %}
+            <div class="catalog-description">
+                <div class="catalog-description__content">
+                    {{ subcategory.description|linebreaksbr }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% comment %} Разделы скрыты по умолчанию, показываются при клике на подкатегорию {% endcomment %}
+            <div class="subcategory-sections" data-subcategory-id="{{ subcategory.id }}" style="display: none;">
+                {% for section in subcategory.sections.all %}
+                {% if section.is_active %}
+                <div class="catalog-section-item" id="section-{{ section.id }}">
+                    <h4 class="catalog-section-item__title">
+                        <a href="javascript:;" class="section-toggle" data-section-id="{{ section.id }}">
+                            <span class="category-toggle__title">{{ section.title }}</span>
+                            {% with products_count=section.get_products_count %}
+                            {% if products_count > 0 %}
+                            <span class="category-toggle__count">({{ products_count }} товаров)</span>
+                            {% endif %}
+                            {% endwith %}
+                        </a>
+                    </h4>
+                    {% if section.description %}
+                    <div class="catalog-description">
+                        <div class="catalog-description__content">
+                            {{ section.description|linebreaksbr }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% comment %} Товары скрыты по умолчанию, показываются при клике на раздел {% endcomment %}
+                    {% with products_list=section.products.all|slice:":9" total_count=section.get_products_count %}
+                    <div class="row small-up-1 medium-up-2 large-up-3 catalog-cards section-products" data-section-id="{{ section.id }}" style="visibility: hidden; position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
+                        {% for product in products_list %}
+                        {% if product.is_active %}
+                        <div class="column column-block">
+                            <div class="product-box" data-product="{{ product.sku }}">
+                                <div class="product-box__inner">
+                                    <div class="product-box__photo-wrap">
+                                        <a href="javascript:;" class="dev_product_detail product-box__photo" data-id="{{ product.sku }}">
+                                            <img class="dev_fly_cart" src="{{ product.image_url }}" alt="{{ product.title }}" data-id="{{ product.sku }}" loading="eager">
+                                        </a>
+                                    </div>
+                                    <div class="product-box__content">
+                                        <div class="product-box__title">{{ product.title }}</div>
+                                        <div class="product-box__meta">
+                                            {% if product.sku %}
+                                            <div class="product-box__sku"><strong>Маркировка:</strong> {{ product.sku }}</div>
+                                            {% endif %}
+                                            {% if product.wire_section %}
+                                            <div><strong>Сечение провода:</strong> {{ product.wire_section }}</div>
+                                            {% endif %}
+                                            {% if product.load_limit %}
+                                            <div><strong>Предельная нагрузка:</strong> {{ product.load_limit }}</div>
+                                            {% endif %}
+                                            {% if product.unit %}
+                                            <div><strong>Ед. изм.:</strong> {{ product.unit }}</div>
+                                            {% endif %}
+                                        </div>
+                                        {% if product.display_price|floatformat:0 != "0" or product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                                        <div class="product-box__prices">
+                                            {% if product.display_price|floatformat:0 != "0" %}
+                                            <div class="product-box__price">
+                                                <span class="product-box__price-label">Спец. цена</span>
+                                                <span class="product-box__price-value">{{ product.display_price|floatformat:0|intcomma }} тг</span>
+                                            </div>
+                                            {% endif %}
+                                            {% if product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                                            <div class="product-box__price product-box__price--secondary">
+                                                <span class="product-box__price-label">Розница</span>
+                                                <span class="product-box__price-value">{{ product.price_retail|floatformat:0|intcomma }} тг</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                        <div class="product-box__controls">
+                                            <div class="product-box__qty">
+                                                <button class="button-qty minus" type="button" data-action="decrease">-</button>
+                                                <input type="number" class="product-count" name="quantity-{{ product.pk }}" value="1" min="1">
+                                                <button class="button-qty plus" type="button" data-action="increase">+</button>
+                                            </div>
+                                            <div class="product-box__button">
+                                                <a href="javascript:;" class="button-ordinary dev_to_cart" data-id="{{ product.sku|default:product.pk }}" data-product-id="{{ product.pk }}" data-title="{{ product.title }}" data-sku="{{ product.sku }}" data-price="{{ product.display_price }}" data-image="{{ product.image_url }}">
+                                                    В корзину
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% comment %} Кнопка "Показать еще" - показывается только если товаров больше 9 {% endcomment %}
+                    {% if total_count > 9 %}
+                    <div class="section-load-more" data-section-id="{{ section.id }}" style="display: none; text-align: center; margin-top: 20px;">
+                        <button type="button" class="button-ordinary section-load-more-btn" data-section-id="{{ section.id }}" data-offset="9" data-limit="9">
+                            Показать еще
+                        </button>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endfor %}

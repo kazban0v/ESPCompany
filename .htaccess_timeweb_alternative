@@ -1,0 +1,74 @@
+# Django settings for Timeweb - Alternative configuration
+
+# Включаем mod_rewrite
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Статические файлы - отдаем напрямую (не передаем в Django)
+RewriteCond %{REQUEST_URI} ^/static/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/media/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/bitrix/
+RewriteRule ^(.*)$ - [L]
+
+RewriteCond %{REQUEST_URI} ^/upload/
+RewriteRule ^(.*)$ - [L]
+
+# Все остальное - на Django через Passenger или mod_wsgi
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ passenger_wsgi.py/$1 [QSA,L]
+</IfModule>
+
+# Настройка для Passenger (если доступен)
+<IfModule mod_passenger.c>
+   PassengerAppRoot /home/c/cn956883/ESPCompany/public_html
+   PassengerAppType wsgi
+   PassengerStartupFile passenger_wsgi.py
+   PassengerBaseURI /
+</IfModule>
+
+# Настройка для mod_wsgi (если используется Apache с mod_wsgi)
+<IfModule mod_wsgi.c>
+   WSGIDaemonProcess django_app python-path=/home/c/cn956883/ESPCompany/public_html
+   WSGIProcessGroup django_app
+   WSGIScriptAlias / /home/c/cn956883/ESPCompany/public_html/passenger_wsgi.py
+</IfModule>
+
+# Защита Python файлов (кроме WSGI файлов)
+<FilesMatch "\.py$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Исключение для WSGI файлов
+<FilesMatch "(passenger_wsgi\.py|esp_site/wsgi\.py)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# Защита конфиденциальных файлов
+<FilesMatch "^(manage\.py|db\.sqlite3|settings\.py|\.env)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+

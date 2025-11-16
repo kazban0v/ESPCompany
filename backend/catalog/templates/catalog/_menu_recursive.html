@@ -1,0 +1,32 @@
+{% for category in categories %}
+<li class="{% if category.subcategories.all %}has-dropdown{% endif %}">
+    <a href="javascript:;" class="category-menu-toggle" data-category-id="{{ category.id }}">
+        <i class="icon-check-2"><span class="path1"></span><span class="path2"></span></i>
+        {{ category.title }}
+    </a>
+    {% if category.subcategories.all %}
+    <ul class="menu-catalog__items lvl-{{ level|default:1|add:1 }}" style="display: none;">
+        {% for subcategory in category.subcategories.all %}
+        <li class="{% if subcategory.sections.all %}has-dropdown{% endif %}">
+            <a href="javascript:;" class="subcategory-menu-toggle" data-subcategory-id="{{ subcategory.id }}">
+                <i class="icon-check-2"><span class="path1"></span><span class="path2"></span></i>
+                {{ subcategory.title }}
+            </a>
+            {% if subcategory.sections.all %}
+            <ul class="menu-catalog__items lvl-{{ level|default:1|add:2 }}" style="display: none;">
+                {% for section in subcategory.sections.all %}
+                <li>
+                    <a href="javascript:;" class="section-menu-toggle" data-section-id="{{ section.id }}">
+                        <i class="icon-check-2"><span class="path1"></span><span class="path2"></span></i>
+                        {{ section.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</li>
+{% endfor %}

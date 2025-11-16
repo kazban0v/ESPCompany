@@ -1,0 +1,90 @@
+{% load static %}
+{% load humanize %}
+<div class="box-modal">
+    <button class="box-modal__close" data-close type="button">
+        <span>
+            <i class="icon-close"></i>
+        </span>
+    </button>
+    <div class="box-modal__content">
+        <div class="product-detail">
+            <div class="row">
+                <div class="small-12 medium-6 column">
+                    <div class="product-detail__image">
+                        <img src="{{ product.image_url }}" alt="{{ product.title }}">
+                    </div>
+                </div>
+                <div class="small-12 medium-6 column">
+                    <div class="product-detail__info">
+                        <h2 class="product-detail__title">{{ product.title }}</h2>
+
+                        <div class="product-detail__meta">
+                            {% if product.sku %}
+                            <div class="product-detail__meta-item">
+                                <strong>Маркировка:</strong> {{ product.sku }}
+                            </div>
+                            {% endif %}
+                            {% if product.wire_section %}
+                            <div class="product-detail__meta-item">
+                                <strong>Сечение провода:</strong> {{ product.wire_section }}
+                            </div>
+                            {% endif %}
+                            {% if product.load_limit %}
+                            <div class="product-detail__meta-item">
+                                <strong>Предельная нагрузка:</strong> {{ product.load_limit }}
+                            </div>
+                            {% endif %}
+                            {% if product.unit %}
+                            <div class="product-detail__meta-item">
+                                <strong>Ед. изм.:</strong> {{ product.unit }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% if product.full_description %}
+                        <div class="product-detail__description">
+                            <h3>Описание</h3>
+                            <div>{{ product.full_description|linebreaksbr }}</div>
+                        </div>
+                        {% elif product.short_description %}
+                        <div class="product-detail__description">
+                            <h3>Описание</h3>
+                            <div>{{ product.short_description|linebreaksbr }}</div>
+                        </div>
+                        {% endif %}
+
+                        {% if product.display_price|floatformat:0 != "0" or product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                        <div class="product-detail__prices">
+                            {% if product.display_price|floatformat:0 != "0" %}
+                            <div class="product-detail__price">
+                                <span class="product-detail__price-label">Спец. цена</span>
+                                <span class="product-detail__price-value">{{ product.display_price|floatformat:0|intcomma }} тг</span>
+                            </div>
+                            {% endif %}
+                            {% if product.price_retail and product.price_retail|floatformat:0 != "0" %}
+                            <div class="product-detail__price product-detail__price--secondary">
+                                <span class="product-detail__price-label">Розница</span>
+                                <span class="product-detail__price-value">{{ product.price_retail|floatformat:0|intcomma }} тг</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        <div class="product-detail__controls">
+                            <div class="product-detail__qty">
+                                <button class="button-qty minus" type="button" data-action="decrease">-</button>
+                                <input type="number" class="product-count" name="quantity-{{ product.pk }}" value="1" min="1">
+                                <button class="button-qty plus" type="button" data-action="increase">+</button>
+                            </div>
+                            <div class="product-detail__button">
+                                <a href="javascript:;" class="button-ordinary dev_to_cart" data-id="{{ product.sku|default:product.pk }}" data-product-id="{{ product.pk }}" data-title="{{ product.title }}" data-sku="{{ product.sku }}" data-price="{{ product.display_price }}" data-image="{{ product.image_url }}">
+                                    В корзину
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
