@@ -28,11 +28,20 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-rsfg=+tq3ccn3g@3(81pb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default='True') == 'True'
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+# Базовая настройка ALLOWED_HOSTS
+allowed_hosts_default = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_default.split(',') if host.strip()]
+
 # Railway автоматически устанавливает RAILWAY_PUBLIC_DOMAIN
 railway_domain = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
 if railway_domain:
-    ALLOWED_HOSTS.append(railway_domain)
+    if railway_domain not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(railway_domain)
+
+# Если мы на Railway (определяем по наличию RAILWAY_ENVIRONMENT или PORT), разрешаем все домены
+# Это нужно, так как Railway может использовать разные домены
+if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('PORT'):
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
