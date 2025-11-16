@@ -6060,8 +6060,8 @@ html.is-reveal-open, html.is-reveal-open body {
 
 @font-face {
     font-family: 'icon';
-    src: url("../../../../../templates/ck-mitra/fonts/icomoon.eot@afeki");
-    src: url("../../../../../templates/ck-mitra/fonts/icomoon.eot@afeki") format("embedded-opentype"), url("../../../../../templates/ck-mitra/fonts/icomoon.ttf@afeki") format("truetype"), url("../../../../../templates/ck-mitra/fonts/icomoon.woff@afeki") format("woff"), url("../../../../../templates/ck-mitra/fonts/icomoon.svg@afeki") format("svg");
+    src: url("../../fonts/icomoon.eot@afeki");
+    src: url("../../fonts/icomoon.eot@afeki") format("embedded-opentype"), url("../../fonts/icomoon.ttf@afeki") format("truetype"), url("../../fonts/icomoon.woff@afeki") format("woff"), url("../../fonts/icomoon.svg@afeki") format("svg");
     font-weight: normal;
     font-style: normal;
 }
@@ -6225,7 +6225,7 @@ a {
 #benefits {
     position: relative;
     z-index: 2;
-    background: url(../../../../../templates/ck-mitra/img/pattern-bg-1.png) repeat-x 50% 5px;
+    background: url(../../img/bitrix/pattern-bg-1.png) repeat-x 50% 5px;
     padding: 90px 0 0;
 }
 
@@ -6243,7 +6243,7 @@ a {
 }
 
 #company {
-    background: url(../../../../../templates/ck-mitra/img/company-bg.jpg) 50% 0 #08181e;
+    background: url(../../img/bitrix/company-bg.jpg) 50% 0 #08181e;
     background-size: cover;
     color: #fff;
     padding: 80px 0 40px;
@@ -6265,7 +6265,7 @@ a {
 
 #selectionCatalog {
     padding: 70px 0;
-    background: url(../../../../../templates/ck-mitra/img/selection-bg.png) 50% #09181e;
+    background: url(../../img/bitrix/selection-bg.png) 50% #09181e;
     background-size: auto 100%;
     color: #fff;
 }
@@ -6290,7 +6290,7 @@ a {
 
 #howWorking {
     position: relative;
-    background: url(../../../../../templates/ck-mitra/img/pattern-bg-1.png) repeat-x 50% 5px;
+    background: url(../../img/bitrix/pattern-bg-1.png) repeat-x 50% 5px;
     padding: 90px 0 0px;
 }
 
@@ -6317,7 +6317,7 @@ a {
 
 .page-wrapper {
     position: relative;
-    min-height: 100vh;
+    min-height: auto;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -6331,7 +6331,7 @@ a {
 }
 
 .page-wrapper--thank {
-    background: url(../../../../../templates/ck-mitra/img/header-bg.jpg) no-repeat 50% 50% #08181e;
+    background: url(../../img/bitrix/header-bg.jpg) no-repeat 50% 50% #08181e;
     background-size: cover;
 }
 
@@ -6350,7 +6350,7 @@ a {
 }
 
 .page-wrapper--404 {
-    background: url(../../../../../templates/ck-mitra/img/header-bg-404.jpg) no-repeat 50% 50% #08181e;
+    background: url(../../img/bitrix/header-bg-404.jpg) no-repeat 50% 50% #08181e;
     background-size: cover;
 }
 
@@ -6763,7 +6763,7 @@ a {
 }
 
 .header-box {
-    background: url(../../../../../templates/ck-mitra/img/header-bg.jpg) no-repeat 50% 50% #08181e;
+    background: url(../../img/bitrix/header-bg.jpg) no-repeat 50% 50% #08181e;
     background-size: cover;
     -webkit-box-flex: 0;
     -ms-flex: 0 1 auto;
