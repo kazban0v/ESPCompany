@@ -149,15 +149,10 @@ STATICFILES_DIRS = [
 ]
 
 # WhiteNoise для статических файлов на Railway
-# WhiteNoise автоматически обслуживает файлы из STATIC_ROOT в production
-# В production не используем STATICFILES_STORAGE - WhiteNoise работает напрямую
+# WhiteNoise автоматически обслуживает файлы из STATIC_ROOT
+# В DEBUG режиме используем стандартный storage для разработки
 if DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-else:
-    # Настройки WhiteNoise для статических файлов (после определения STATIC_ROOT)
-    WHITENOISE_USE_FINDERS = False  # Используем только STATIC_ROOT, не ищем файлы динамически
-    WHITENOISE_ROOT = STATIC_ROOT  # Явно указываем корневую директорию
-    WHITENOISE_AUTOREFRESH = False  # Не обновлять файлы автоматически в production
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

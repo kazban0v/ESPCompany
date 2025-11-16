@@ -4,7 +4,7 @@
         "builder": "NIXPACKS"
     },
     "deploy": {
-        "startCommand": "cd backend && python manage.py migrate --run-syncdb --noinput && python manage.py collectstatic --noinput && gunicorn esp_site.wsgi --bind 0.0.0.0:$PORT",
+        "startCommand": "cd backend && python manage.py migrate --run-syncdb --noinput && python manage.py collectstatic --noinput --clear && gunicorn esp_site.wsgi --bind 0.0.0.0:$PORT",
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
     }
