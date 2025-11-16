@@ -7,6 +7,10 @@ import os
 import sys
 from pathlib import Path
 
+print("=" * 50)
+print("CHECK_STATIC.PY: Начало проверки статических файлов")
+print("=" * 50)
+
 # Добавляем путь к проекту
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
@@ -22,14 +26,28 @@ from django.core.management import call_command
 # Проверяем директорию staticfiles
 staticfiles_dir = BASE_DIR / 'staticfiles'
 print(f"STATIC_ROOT: {settings.STATIC_ROOT}")
+print(f"BASE_DIR: {BASE_DIR}")
+print(f"staticfiles_dir path: {staticfiles_dir}")
 print(f"staticfiles_dir exists: {staticfiles_dir.exists()}")
 
+# Всегда выполняем collectstatic для надежности
+print("\nВыполняем collectstatic...")
+try:
+    result = call_command('collectstatic', '--noinput', verbosity=2)
+    print("✓ collectstatic выполнен успешно")
+except Exception as e:
+    print(f"✗ Ошибка при collectstatic: {e}")
+    import traceback
+    traceback.print_exc()
+
+# Проверяем результат
 if staticfiles_dir.exists():
     # Считаем файлы
     css_files = list(staticfiles_dir.rglob('*.css'))
     js_files = list(staticfiles_dir.rglob('*.js'))
     img_files = list(staticfiles_dir.rglob('*.png')) + list(staticfiles_dir.rglob('*.jpg'))
     
+    print(f"\nРезультаты:")
     print(f"CSS files: {len(css_files)}")
     print(f"JS files: {len(js_files)}")
     print(f"Image files: {len(img_files)}")
@@ -38,18 +56,18 @@ if staticfiles_dir.exists():
     main_js = staticfiles_dir / 'js' / 'main.js'
     custom_css = staticfiles_dir / 'css' / 'custom.css'
     
-    print(f"main.js exists: {main_js.exists()}")
-    print(f"custom.css exists: {custom_css.exists()}")
+    print(f"\nПроверка конкретных файлов:")
+    print(f"main.js exists: {main_js.exists()} (path: {main_js})")
+    print(f"custom.css exists: {custom_css.exists()} (path: {custom_css})")
     
-    if not main_js.exists() or not custom_css.exists():
-        print("⚠ Статические файлы не найдены, выполняем collectstatic...")
-        call_command('collectstatic', '--noinput', verbosity=2)
-        print("✓ collectstatic выполнен")
+    if main_js.exists():
+        print(f"main.js size: {main_js.stat().st_size} bytes")
+    if custom_css.exists():
+        print(f"custom.css size: {custom_css.stat().st_size} bytes")
 else:
-    print("⚠ Директория staticfiles не существует, создаем и собираем файлы...")
-    staticfiles_dir.mkdir(exist_ok=True)
-    call_command('collectstatic', '--noinput', verbosity=2)
-    print("✓ collectstatic выполнен")
+    print("✗ Директория staticfiles не существует после collectstatic!")
 
-print("✓ Проверка статических файлов завершена")
+print("=" * 50)
+print("CHECK_STATIC.PY: Проверка завершена")
+print("=" * 50)
 
