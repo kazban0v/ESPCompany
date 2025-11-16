@@ -36,3 +36,6 @@ Thumbs.db
 # Railway
 .railway/
 
+# Bitrix cache (кэш не нужен в репозитории)
+bitrix/cache/
+
