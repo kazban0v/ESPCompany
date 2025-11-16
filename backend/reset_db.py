@@ -45,3 +45,11 @@ except Exception as e:
 
 print("✓ База данных готова")
 
+# Проверяем, что таблицы созданы
+cursor = connection.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='catalog_product'")
+if cursor.fetchone():
+    print("✓ Таблица catalog_product существует")
+else:
+    print("✗ Таблица catalog_product не найдена")
+
