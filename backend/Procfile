@@ -1,2 +1,2 @@
-web: cd backend && python reset_db.py 2>&1 && python check_static.py 2>&1 && echo 'Starting gunicorn...' && gunicorn esp_site.wsgi --bind 0.0.0.0:$PORT
+web: python reset_db.py 2>&1; python check_static.py 2>&1; echo 'Starting gunicorn...'; gunicorn esp_site.wsgi --bind 0.0.0.0:$PORT
 
