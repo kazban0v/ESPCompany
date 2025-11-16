@@ -156,7 +156,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Настройки безопасности для production
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    # Railway обрабатывает HTTPS через прокси, поэтому отключаем принудительное перенаправление
+    # SECURE_SSL_REDIRECT = True  # Отключено для Railway
+    # Настраиваем Django для работы за прокси Railway
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
